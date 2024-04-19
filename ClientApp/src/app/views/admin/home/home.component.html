@@ -1,0 +1,562 @@
+<div class="w-full h-screen fixed main">
+  <!-- <aside class="sidebar">
+    <div>Test</div>
+    <div
+      class="blocker"
+      onclick="document.querySelector('.sidebar').classList.toggle('toggle')"
+    ></div>
+  </aside> -->
+  <button
+    *ngIf="toggleSidebar"
+    id="toggleSidebarButton2"
+    class="toggle-sidebar-button2"
+    (click)="handleButtonClick()"
+  >
+    <i class="ph flex items-center ph-caret-right"></i>
+  </button>
+  <div class="flex select-none">
+    <!-- sideBar -->
+    <div
+      id="sidebar"
+      class="w-[320px] h-screen border-r border-[#EBEAED] px-[32px] py-[24px] sidebar"
+    >
+      <button
+        id="toggleSidebarButton"
+        class="toggle-sidebar-button"
+        (click)="handleButtonClick()"
+      >
+        <i class="ph flex items-center ph-caret-right"></i>
+      </button>
+      <div class="flex justify-between items-center">
+        <div>
+          <img
+            src="../../../../assets/Admin.png"
+            class="w-[9vw] object-cover"
+          />
+        </div>
+        <button
+          class="flex gap-[-5px] items-start cursor-pointer transform hover:scale-110 transition-transform"
+        >
+          <i class="ph-bold ph-caret-left"></i>
+          <i class="ph-bold ph-caret-left"></i>
+        </button>
+      </div>
+      <div
+        class="flex items-center gap-[20px] justify-between self-stretch py-[10px] px-[16px] bg-[#29B475] mt-[18px] mb-[32px] rounded-[10px]"
+      >
+        <p class="text-white font-chu2 text-[14px] font-bold">Trang Admin</p>
+
+        <i class="ph-bold ph-squares-four text-white text-[24px]"></i>
+      </div>
+      <ul
+        class="cursor-pointer text-[14px] font-bold font-chu2 leading-[24px] max-h-[80vh] scrollBar overflow-y-auto pb-[16px]"
+      >
+        <li>
+          <details open>
+            <summary (click)="toogleClick()" class="pb-[16px]">
+              <div
+                class="flex justify-between items-center hover:text-[#29B475]"
+              >
+                <div class="flex gap-[10px] items-center">
+                  <i
+                    class="ph-bold ph-briefcase text-[20px] text-[#29B475]"
+                  ></i>
+                  <h1>Quản lý Hệ thống</h1>
+                </div>
+                <i
+                  class="ph flex items-center font-semibold text-[20px]"
+                  [ngClass]="{
+                    'ph-caret-up': !showDropdown,
+                    'ph-caret-down': showDropdown
+                  }"
+                ></i>
+              </div>
+            </summary>
+            <ul class="tree .dropdown-container">
+              <li>
+                <button
+                  (click)="ButtonNHHK()"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý năm học'
+                  }"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                >
+                  Quản lý Năm học kỳ
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonBacHe()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-100"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý bậc hệ'
+                  }"
+                >
+                  Quản lý Bậc hệ
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonNganh()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý ngành'
+                  }"
+                >
+                  Quản lý Ngành
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonBHNganh()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý bậc hệ ngành'
+                  }"
+                >
+                  Quản lý Bậc hệ Ngành
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonKhoa()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý khoa'
+                  }"
+                >
+                  Quản lý Khoa
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonLop()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý lớp'
+                  }"
+                >
+                  Quản lý Lớp
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonGV()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý giảng viên'
+                  }"
+                >
+                  Quản lý Giảng viên
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonSinhVien()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý sinh viên'
+                  }"
+                >
+                  Quản lý Sinh viên
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonDiaDiem()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý địa điểm'
+                  }"
+                >
+                  Quản lý Địa điểm
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonPhong()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý phòng'
+                  }"
+                >
+                  Quản lý Phòng
+                </button>
+              </li>
+            </ul>
+          </details>
+        </li>
+
+        <li>
+          <details>
+            <summary (click)="toogleClick3()" class="pb-[16px]">
+              <div
+                class="flex justify-between items-center hover:text-[#29B475]"
+              >
+                <div class="flex gap-[10px] items-center">
+                  <i
+                    class="ph-bold ph-person-simple-run text-[20px] text-[#29B475]"
+                  ></i>
+                  <h1>Quản lý Hoạt Động</h1>
+                </div>
+                <i
+                  class="ph flex items-center font-semibold text-[20px]"
+                  [ngClass]="{
+                    'ph-caret-up': !showDropdown3,
+                    'ph-caret-down': showDropdown3
+                  }"
+                ></i>
+              </div>
+            </summary>
+            <ul class="tree dropdown-container">
+              <li>
+                <button
+                  (click)="ButtonHDNK()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button':
+                      activeButton === 'Quản lý hoạt động ngoại khoá'
+                  }"
+                >
+                  Hoạt động ngoại khoá
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonXL()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý xếp loại'
+                  }"
+                >
+                  Xếp loại rèn luyện
+                </button>
+              </li>
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary (click)="toogleClick2()" class="pb-[16px]">
+              <div
+                class="flex justify-between items-center hover:text-[#29B475]"
+              >
+                <div class="flex gap-[10px] items-center">
+                  <i
+                    class="ph-bold ph-user-gear text-[20px] text-[#29B475]"
+                  ></i>
+                  <h1 class="max-w-[150px] truncate">
+                    Quản lý Văn bản & Tài Liệu
+                  </h1>
+                </div>
+                <i
+                  class="ph flex items-center font-semibold text-[20px]"
+                  [ngClass]="{
+                    'ph-caret-up': !showDropdown2,
+                    'ph-caret-down': showDropdown2
+                  }"
+                ></i>
+              </div>
+            </summary>
+            <ul class="tree dropdown-container">
+              <li>
+                <button
+                  (click)="ButtonDieu()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý điều'
+                  }"
+                >
+                  Quản lý Điều
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonVBTL()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý văn bản'
+                  }"
+                >
+                  Quản lý Tài liệu
+                </button>
+              </li>
+              <li>
+                <button
+                  (click)="ButtonND()"
+                  class="rounded-[10px] hover:bg-[#f8f8f8] font-medium hover:font-semibold hover:px-[16px] hover:ml-[-4px] duration-300"
+                  [ngClass]="{
+                    'active-button': activeButton === 'Quản lý người dùng'
+                  }"
+                >
+                  Quản lý Tài khoản
+                </button>
+              </li>
+            </ul>
+          </details>
+        </li>
+      </ul>
+
+      <!-- <div class="overlay">
+        <div
+          id="systemContent"
+          class="h-[40px] flex content-center flex-wrap items-center justify-between cursor-pointer"
+          (click)="toggleButtons('systemContent')"
+        >
+          <div class="flex gap-[10px] items-center">
+            <i class="ph-bold ph-briefcase text-[#29B475] text-[20px]"></i>
+            <p class="text-[14px] font-bold font-chu2 leading-[24px] py-2">
+              Quản lý hệ thống
+            </p>
+          </div>
+
+          <i
+            class="ph flex items-center text-[#CBD5E0] font-semibold text-[20px]"
+            [ngClass]="{
+              'ph-caret-right': !showDropdown,
+              'ph-caret-down': showDropdown
+            }"
+          ></i>
+        </div>
+        <div *ngIf="showDropdown">
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý năm học'
+            }"
+            (click)="ButtonNHHK()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý năm học kỳ
+            </p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý bậc hệ'
+            }"
+            (click)="ButtonBacHe()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">Quản lý bậc hệ</p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý ngành'
+            }"
+            (click)="ButtonNganh()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">Quản lý ngành</p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý bậc hệ ngành'
+            }"
+            (click)="ButtonBHNganh()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý bậc hệ ngành
+            </p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý khoa'
+            }"
+            (click)="ButtonKhoa()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">Quản lý khoa</p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý lớp'
+            }"
+            (click)="ButtonLop()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">Quản lý lớp</p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý giảng viên'
+            }"
+            (click)="ButtonGV()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý giảng viên
+            </p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý sinh viên'
+            }"
+            (click)="ButtonSinhVien()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+            :focus="focus"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý sinh viên
+            </p>
+          </button>
+
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý địa điểm'
+            }"
+            (click)="ButtonDiaDiem()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">Quản lý địa điểm</p>
+          </button>
+
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý hoạt phòng'
+            }"
+            (click)="ButtonPhong()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý phòng học
+            </p>
+          </button>
+        </div>
+        <div
+          id="activityContent"
+          class="h-[40px] flex content-center flex-wrap items-center justify-between cursor-pointer"
+          (click)="toggleButtons('activityContent')"
+        >
+          <div class="flex gap-[10px] items-center">
+            <i
+              class="ph-bold ph-person-simple-run text-[#29B475] text-[20px]"
+            ></i>
+            <p class="text-[14px] font-bold font-chu2 leading-[24px] py-2">
+              Quản lý hoạt động
+            </p>
+          </div>
+
+          <i
+            class="ph flex items-center text-[#CBD5E0] font-semibold text-[20px]"
+            [ngClass]="{
+              'ph-caret-right': !showDropdown2,
+              'ph-caret-down': showDropdown2
+            }"
+          ></i>
+        </div>
+        <div *ngIf="showDropdown2">
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý hoạt động ngoại khoá'
+            }"
+            (click)="ButtonHDNK()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px] text-left">
+              Quản lý hoạt động ngoại khóa
+            </p>
+          </button>
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý xếp loại'
+            }"
+            (click)="ButtonXL()"
+            class="w-full h-[40px] flex items-center pl-2 hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="text-[13px] leading-[20px] text-left py-[8px]">
+              Quản lý xếp loại hoạt động rèn luyện
+            </p>
+          </button>
+        </div>
+
+        <div
+          id="documentContent"
+          class="h-[40px] flex content-center flex-wrap items-center justify-between cursor-pointer"
+          (click)="toggleButtons('documentContent')"
+        >
+          <div class="flex gap-[10px] items-center">
+            
+            <i class="ph-bold ph-user-gear text-[#29B475] text-[20px]"></i>
+            <p
+              class="text-[14px] font-bold font-chu2 leading-[24px] py-2 max-w-[150px] truncate"
+            >
+              Quản lý Tài liệu & Tài khoản
+            </p>
+          </div>
+
+          <i
+            class="ph flex items-center text-[#CBD5E0] font-semibold text-[20px]"
+            [ngClass]="{
+              'ph-caret-right': !showDropdown3,
+              'ph-caret-down': showDropdown3
+            }"
+          ></i>
+        </div>
+        <div *ngIf="showDropdown3">
+          <button
+            [ngClass]="{
+              'active-button': activeButton === 'Quản lý người dùng'
+            }"
+            (click)="ButtonND()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý tài khoản
+            </p>
+          </button>
+          <button
+            [ngClass]="{ 'active-button': activeButton === 'Quản lý văn bản' }"
+            (click)="ButtonVBTL()"
+            class="w-full h-[40px] flex items-center pl-2 flex-wrap hover:bg-blue-200 hover:text-black rounded-[8px] hover:font-semibold font-chu3 transition-all"
+          >
+            <i class="ph-bold ph-minus pr-2"></i>
+            <p class="py-[10px] text-[13px] leading-[20px]">
+              Quản lý kho tài liệu
+            </p>
+          </button>
+        </div>
+      </div> -->
+    </div>
+    <div class="bg-[#f9fafa] w-full h-screen">
+      <div class="h-[60px] border-b border-[#EBEAED] bg-white">
+        <div
+          class="flex justify-end items-center gap-[8px] py-[14px] px-[32px]"
+        >
+          <img src="../../../../assets/Users.png" class="w-[32px] h-[32px]" />
+          <button class="hover:text-[green]" (click)="togglelogout()">
+            <i class="ph-bold ph-caret-down"></i>
+          </button>
+
+          <div
+            *ngIf="toggleLogout"
+            class="z-10 bg-emerald-400 absolute font-bold mt-[100px] divide-y hover:text-white divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
+          >
+            <div
+              class="py-2 pl-[15px] flex gap-[2px] items-center cursor-pointer"
+              (click)="logout()"
+            >
+              <i class="ph-bold ph-sign-out"></i>
+              <a class="block px-2 py-1 text-sm">Đăng xuất</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

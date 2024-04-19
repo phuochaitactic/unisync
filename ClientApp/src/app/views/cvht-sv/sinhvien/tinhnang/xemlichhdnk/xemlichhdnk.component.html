@@ -1,0 +1,19 @@
+<dx-scheduler
+  timeZone="Asia/Ho_Chi_Minh"
+  [dataSource]="appointmentsData"
+  [views]="['week', 'month']"
+  currentView="week"
+  [currentDate]="currentDate"
+  [startDayHour]="7"
+  [endDayHour]="21"
+  [height]="570"
+>
+  <dxo-editing
+    #editingOptions
+    [allowAdding]="false"
+    [allowDeleting]="false"
+    [allowUpdating]="false"
+    [allowResizing]="true"
+    [allowDragging]="false"
+  ></dxo-editing>
+</dx-scheduler>

@@ -1,0 +1,133 @@
+th, td {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.h-table {
+    height: calc(100% - 54px);
+}
+
+.max-h-table {
+    max-height: 500px;
+}
+
+  
+.active-subButton {
+    background-color: #ececec;
+    font-weight: bold;
+}
+
+.flex-container {
+    display: flex;
+}
+
+/* Thiết lập style cho màn hình nhỏ hơn 1000px */
+@media (max-width: 1000px) {
+    .flex-container {
+        flex-direction: column; /* Hiển thị theo chiều dọc */
+    }
+
+    .flex-below {
+        order: 2; /* Đẩy phần flex-[8] xuống dưới */
+    }
+
+    .flex-above {
+        order: 1; /* Hiển thị phần flex-[2] trước tiên */
+    }
+
+    .footer-mobile {
+        display: block
+    }
+
+    .footer-desktop {
+        display: none
+    }
+
+    .p-ft {
+        padding: 0;
+    }
+
+    .spacing-content-mobile {
+        padding: 10px 0 0 0;
+    }
+
+    .hamburger-menu {
+        display: none;
+    }
+
+    .p-username-mobile {
+        padding: 0 0 0 10px
+    }
+
+    .p-userInfo-mobile {
+        padding: 12px 8px 0;
+    }
+
+    .btn-ft-mobile {
+        height: 36px;
+    }
+}
+
+.dropbtn {
+    padding: 0px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 99;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.subdiv {
+    display:none;
+}
+
+.dropdown:hover .subdiv {
+    display:block;
+}
+
+.submenu {
+display:none;
+position:absolute;
+left:60px;
+top:0px;
+}
+
+.submenu_holder:hover .submenu {
+display:block;
+}
+
+.submenu_holder {
+position:relative;
+}
+
+.bg-linearGradient {
+    background: linear-gradient(180deg, #29B475 0%, #1AAB69 100%)
+}

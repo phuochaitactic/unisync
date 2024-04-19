@@ -1,0 +1,203 @@
+<div class="bg-white rounded-[16px] m-[16px] height-table">
+  <div class="flex justify-between items-center px-5 py-[16px]">
+    <div class="flex flex-col items-start">
+      <h1
+        class="text-black font-bold leading-[28px] text-fieldskhoa font-chu2 text-[22px]"
+      >
+        {{ title }}
+      </h1>
+      <span
+        class="font-medium text-[14px] leading-[22px] text-[#687588] font-chu2 mt-[8px]"
+        >Quản lý Bậc hệ Ngành trong khoa</span
+      >
+    </div>
+  </div>
+
+  <div
+    class="flex justify-end px-[20px] py-[8px] items-center self-stretch border-khoa gap-4"
+  >
+    <div class="relative w-full">
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <i class="ph-bold ph-magnifying-glass text-[20px]"></i>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        name="timBHN"
+        class="block w-full h-[44px] p-2 pl-10 text-sm border-[#EBEAED] rounded-[10px] text-chung"
+        placeholder="Tìm Kiếm"
+        required
+      />
+    </div>
+
+    <div class="flex gap-4">
+      <div>
+        <button
+          (click)="toggleDropDown()"
+          [ngClass]="{
+            'active-button': activeButton === 'FT Tuần',
+            'active-dropdown': filter1
+          }"
+          class="text-black whitespace-nowrap p-2 h-[44px] hover:border-[#29B475] focus:outline-none border-[1px] rounded-[10px] text-[14px] font-medium font-chu2 px-4 py-2.5 text-center inline-flex items-center"
+          type="button"
+        >
+          <p class="max-w-[130px] truncate">{{ namebhn }}</p>
+          <i class="ph-bold ph-caret-down text-[15px] pl-[5px]"></i>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div
+          *ngIf="filter1"
+          class="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[170px] dark:bg-gray-700 h-[200px] overflow-y-auto"
+        >
+          <ul
+            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="filterbhngnh1"
+          >
+            <li>
+              <a
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                (click)="resetFilterNK()"
+              >
+                Tất Cả Bậc Hệ Ngành
+              </a>
+            </li>
+            <li
+              *ngFor="let lop of bachenganh | uniqueFilter : 'tenBh'"
+              value="tenBh"
+            >
+              <a
+                (click)="filterNam(lop.tenBh)"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+              >
+                <p class="w-[500px] truncate">
+                  {{ lop.tenBh }}
+                </p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-col overflow-y-auto h-[67.7vh] m-[16px] rounded-[16px]">
+    <table class="w-full font-[Manrope] text-chung">
+      <thead class="font-bold text-[#687588]">
+        <tr>
+          <th class="text-center w-[40px]">STT</th>
+          <th class="ten w-[50px]">
+            <button class="flex items-center gap-4">
+              Mã Bậc Hệ Ngành
+              <div class="pt-1">
+                <i *ngIf="this.isIcon" class="ph-bold ph-arrow-fat-up"></i>
+                <i *ngIf="!this.isIcon" class="ph-bold ph-arrow-fat-down"></i>
+              </div>
+            </button>
+          </th>
+          <th class="ten w-[225px]">
+            <button class="flex items-center gap-4">
+              Tên Bậc Hệ Ngành
+              <div class="pt-1">
+                <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                <i *ngIf="!this.isIcons" class="ph-bold ph-arrow-fat-down"></i>
+              </div>
+            </button>
+          </th>
+          <th class="ten w-[70px]">
+            <button class="flex items-center gap-4">
+              Số Lượng Sinh Viên
+              <div class="pt-1">
+                <i *ngIf="this.isIcon" class="ph-bold ph-arrow-fat-up"></i>
+                <i *ngIf="!this.isIcon" class="ph-bold ph-arrow-fat-down"></i>
+              </div>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="text-center" *ngIf="!loading">
+        <tr
+          *ngFor="
+            let lop of bachenganh
+              | filter : 'tenBh' : tbhn
+              | search : searchText
+              | paginate : { itemsPerPage: 15, currentPage: p };
+            let i = index
+          "
+        >
+          <td class="text-center">{{ stt + i }}</td>
+          <td class="ten">
+            {{ lop.maBhngChng !== null ? lop.maBhngChng : "Không" }}
+          </td>
+          <td
+            class="ten max-w-[120px] truncate pr-[5px] hover:text-red-500 hover:underline cursor-pointer"
+          >
+            {{ lop.tenBh !== null ? lop.tenBh : "Không" }}
+          </td>
+          <td class="text-center">{{ slsv }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <ngx-skeleton-loader
+      *ngIf="loading"
+      count="98"
+      [theme]="{
+        width: '130px',
+        height: '30px',
+        left: '20px',
+        margin: '10px',
+        'border-radius': '10px',
+        background: '#F5F5F5'
+      }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+
+    <div
+      class="flex flex-col items-center font-chu2 pt-[32px]"
+      *ngIf="
+        !loading &&
+        (bachenganh | filter : 'tenBh' : tbhn | search : searchText).length ===
+          0
+      "
+    >
+      <img src="../../../../assets/empty1.png" class="w-[87px] h-[87px]" />
+
+      <h1 class="text-[#718096] text-[18px] font-bold pt-[16px]">
+        Dữ liệu trống
+      </h1>
+      <p class="text-[14px] font-normal text-[#A0AEC0]">
+        Vui lòng nhập dữ liệu lên hệ thống
+      </p>
+    </div>
+
+    <div class="flex justify-between py-4">
+      <div>
+        <button
+          *ngIf="showDeleteAllButton"
+          class="flex p-3 text-btn h-[35px] font-chu2 justify-center items-center gap-[8px] button-addkhoa bg-red-600 hover:bg-red-400 text-white transition-all cursor-pointer"
+        >
+          Xoá Tất Cả
+        </button>
+      </div>
+
+      <div
+        class="flex justify-end items-center font-chu2"
+        *ngIf="
+          bachenganh.length > 0 &&
+          (bachenganh | filter : 'tenBh' : tbhn | search : searchText).length >
+            15
+        "
+      >
+        <h1 class="text-[12px] text-fields pb-4">
+          Showing 1 to 15 of
+          {{ bachenganh ? bachenganh.length : 0 }} entries
+        </h1>
+        <pagination-controls
+          class="text-[12px]"
+          (pageChange)="p = $event"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

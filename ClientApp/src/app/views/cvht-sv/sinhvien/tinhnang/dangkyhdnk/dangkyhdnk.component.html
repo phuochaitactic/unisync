@@ -1,0 +1,274 @@
+<div class="w-full h-full flex flex-col font-Manrope">
+  <div *ngIf="dataHDNK && dataHDNK.length > 0; else noDataMessage">
+    <div
+      *ngIf="dataHDNK && dataHDNK.length > 0; else noDataMessage"
+      class="flex-1"
+    >
+      <div class="flex gap-4 py-[10px] pl-[15px]">
+        <p>Tùy chọn đăng ký:</p>
+        <label>
+          <input
+            type="radio"
+            name="option"
+            value="trongKhoa"
+            [(ngModel)]="selectedOption"
+            (change)="toggleOptions('trongKhoa')"
+            checked
+            class="mr-[4px] border-[#CBD5E1] checked:bg-[#29B475] focus:ring-[#29B475]"
+          />
+          Trong khoa
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="option"
+            value="ngoaiKhoa"
+            [(ngModel)]="selectedOption"
+            (change)="toggleOptions('ngoaiKhoa')"
+            class="mr-[4px] border-[#CBD5E1] checked:bg-[#29B475] focus:ring-[#29B475]"
+          />
+          Ngoài Khoa
+        </label>
+      </div>
+      <div class="max-h-table overflow-auto">
+        <div class="tb-1">
+          <table class="font-Manrope max-h-table w-full sticky overflow-auto">
+            <thead class="font-bold text-[#687588] text-[12px] bg-[#fafafa]">
+              <tr>
+                <th class="w-[70px]">STT</th>
+                <th class="w-[90px]">Điều</th>
+                <th class="grow items-start justify-start flex min-w-[400px]">
+                  Hoạt động
+                </th>
+                <th class="w-[114px]">Số lượng</th>
+                <th class="w-[114px]">Ngày BĐ</th>
+                <th class="w-[114px]">Ngày KT</th>
+                <th class="w-[90px]">Điểm</th>
+                <th class="w-[70px]">Chi tiết</th>
+                <th class="w-[70px]">Tham gia</th>
+              </tr>
+            </thead>
+            <tbody class="font-Manrope text-[12px] text-black">
+              <tr
+                class="text-center"
+                *ngFor="let data of filteredDataHDNK; let i = index"
+              >
+                <td>{{ stt + i }}</td>
+                <!-- <td>{{ data.maDieu }}</td> -->
+                <td class="text-left">{{ data.tenHdnk }}</td>
+                <td class="text-center">{{ data.soLuongDuKien }}</td>
+                <td>{{ data.ngayBd | date : "dd/MM/yyyy" }}</td>
+                <td>{{ data.ngayKt | date : "dd/MM/yyyy" }}</td>
+                <td>{{ data.diemHdnk }}</td>
+                <td>
+                  <div class="flex justify-center items-center">
+                    <button
+                      (click)="openPopupComment(data)"
+                      class="items-center justify-center flex p-[4px] border-[1px] rounded-[5px]"
+                    >
+                      <i class="ph-bold ph-eye text-[16px]"></i>
+                    </button>
+                  </div>
+                </td>
+                <td>
+                  <div class="flex justify-center items-center">
+                    <input
+                      type="checkbox"
+                      class="rounded-[5px] border-[#CBD5E1] checked:bg-[#29B475] focus:ring-[#29B475]"
+                      [checked]="isChecked(data)"
+                      (change)="onCheckboxChange(data, $event)"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div
+        *ngIf="
+          filteredDataHDNK && filteredDataHDNK.length > 0;
+          else noDataButtons
+        "
+        class="w-full h-[70px] flex justify-end items-center border-b-[3px]"
+      >
+        <button
+          class="w-[150px] h-[44px] border-[1px] rounded-[10px] bg-[#f6f8fa]"
+        >
+          Hủy bỏ
+        </button>
+        <button
+          [disabled]="checkedItems.length <= 0"
+          (click)="postDataReg_ExActivity()"
+          class="w-[150px] h-[44px] border-[1px] rounded-[10px] button bg-linearGradient ml-[10px] mr-[10px]"
+        >
+          <p class="text-white">Đăng ký</p>
+        </button>
+      </div>
+    </div>
+
+    <div
+      *ngIf="dataHDNK && dataHDNK.length > 0; else noDataMessage"
+      class="flex-1"
+    >
+      <div
+        class="mt-[30px] py-[10px] pr-[10px] w-full bg-[#eaeef2] flex items-center justify-between rounded-[10px] border-[1px] border-gray-300"
+      >
+        <p class="ml-[20px] text-[16px] font-Inter font-semibold text-black">
+          Kết quả đăng ký
+        </p>
+        <button
+          [disabled]="dataReg_Result.length <= 0"
+          (click)="exportPDF()"
+          class="px-[8px] py-[8px] border-[1.5px] rounded-[10px] border-gray-300 flex items-center"
+        >
+          <i class="ph ph-file-arrow-up text-[16px]"></i>
+          <p class="text-[13px] ml-[4px]">Xuất phiếu đăng ký</p>
+        </button>
+      </div>
+      <div class="max-h-table overflow-auto">
+        <table
+          class="font-Manrope w-full max-h-table rounded-10px overflow-x-auto"
+          id="test"
+        >
+          <thead class="font-bold text-[#687588] text-[12px] bg-[#fafafa]">
+            <tr>
+              <th class="w-[70px]">STT</th>
+              <th class="w-[90px]">Điều</th>
+              <th class="grow items-start justify-start flex">Hoạt động</th>
+              <th class="w-[150px]">Khoa</th>
+              <th class="w-[80px]">Điểm</th>
+              <th class="w-[100px]"></th>
+            </tr>
+          </thead>
+          <tbody class="font-Manrope text-[12px] text-black">
+            <tr
+              class="text-center"
+              *ngFor="let data of dataReg_Result; let i = index"
+            >
+              <td>{{ stt + i }}</td>
+              <td>{{ data.maDieu }}</td>
+              <td class="text-left">{{ data.tenhdnk }}</td>
+              <td>-</td>
+              <td>{{ data.soDiem }}</td>
+              <td class="flex justify-center items-center">
+                <button
+                  (click)="onDelete(data.iddangKy)"
+                  class="items-center justify-center flex p-[4px] border-[1px] rounded-[5px]"
+                >
+                  <i class="ph ph-trash text-[18px] text-red-500"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDataMessage>
+    <div class="flex-1 py-4 flex justify-center items-center">
+      <span class="text-[16px] font-Manrope">Chưa đến thời hạn đăng ký !</span>
+    </div>
+  </ng-template>
+
+  <ng-template #noDataButtons>
+    <div class="items-center p-[24px]">
+      <div class="justify-center items-center flex">
+        <img src="../../../../assets/noData.png" class="w-[100px] h-[80px]" />
+      </div>
+      <p class="text-[14px] leading-[20px] text-[#57606a] text-center">
+        Không có dữ liệu !
+      </p>
+    </div>
+  </ng-template>
+</div>
+
+<div
+  *ngIf="isOpenPopup"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full font-Manrope"
+>
+  <div class="w-full h-full flex items-center justify-center">
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-50"
+    ></div>
+    <div
+      class="w-[500px] bg-white shadow-2xl p-[24px] rounded-[16px] relative z-10"
+    >
+      <div class="flex justify-between mb-[20px]">
+        <p class="font-Inter font-semibold text-[18px]">
+          Thông tin chi tiết của hoạt động
+        </p>
+        <button (click)="closePopupComment()">
+          <div class="flex justify-center items-center">
+            <i class="ph ph-x text-[20px]"></i>
+          </div>
+        </button>
+      </div>
+      <div class="gap-[20px]">
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Tên hoạt động</p>
+          <div class="p-2 border-[1px] rounded-[10px] w-full">
+            <p>{{ detailActivity.tenHdnk }}</p>
+          </div>
+        </div>
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Khoa</p>
+          <input
+            [(ngModel)]="detailActivity.tenKhoa"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <!-- <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Mã điều</p>
+          <input
+            [(ngModel)]="detailActivity.maDieu"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div> -->
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Điểm</p>
+          <input
+            [(ngModel)]="detailActivity.diemHdnk"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Ngày bắt đầu</p>
+          <input
+            [value]="detailActivity.ngayBd | date : 'dd/MM/yyyy'"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Ngày kết thúc</p>
+          <input
+            [value]="detailActivity.ngayKt | date : 'dd/MM/yyyy'"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Thời lượng tổ chức</p>
+          <input
+            [(ngModel)]="detailActivity.thoiLuongToChuc"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Địa điểm</p>
+          <input
+            [(ngModel)]="detailActivity.tenDiaDiem"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

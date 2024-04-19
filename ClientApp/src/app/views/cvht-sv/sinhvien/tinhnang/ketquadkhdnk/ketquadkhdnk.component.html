@@ -1,0 +1,239 @@
+<div class="w-full h-full flex flex-col font-Manrope">
+  <div class="flex-1">
+    <div class="flex items-center py-[10px] px-[16px]">
+      <div class="flex display-col-mobile">
+        <div class="flex items-center">
+          <p>Năm học:</p>
+          <div class="ml-[4px]">
+            <select
+              [(ngModel)]="selectedYear"
+              class="inline-flex justify-center gap-x-1.5 rounded-md bg-white pl-[10px] pr-[6px] py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              id="menu-button"
+              aria-expanded="true"
+              aria-haspopup="true"
+            >
+              <option *ngFor="let item of dataYear">
+                {{ item }}
+              </option>
+              <svg
+                class="-mr-1 h-5 w-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </select>
+          </div>
+        </div>
+        <div class="flex items-center pl-[20px] padding-col">
+          <p>Học kì:</p>
+          <div class="ml-[4px]">
+            <select
+              [(ngModel)]="selectedSemester"
+              class="inline-flex justify-center gap-x-1.5 rounded-md bg-white pl-[10px] pr-[6px] py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+              id="menu-button"
+              aria-expanded="true"
+              aria-haspopup="true"
+            >
+              <option *ngFor="let item of dataSemester">
+                {{ item }}
+              </option>
+              <svg
+                class="-mr-1 h-5 w-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </select>
+          </div>
+        </div>
+        <div class="flex items-center pl-[20px] padding-col">
+          <button
+            (click)="onButtonClicked()"
+            class="border-[1px] rounded-[10px] bg-[#29B475] py-2 px-2 text-white"
+          >
+            <p>Lấy thông tin</p>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="px-[10px]">
+      <div class="w-full bg-[#f7eedf] p-[8px] rounded-[10px] mb-[10px]">
+        <p>
+          <span>Chú ý: </span>
+          Kết quả đăng ký sẽ do Cố vấn học tập duyệt cho sinh viên.
+        </p>
+        <div class="flex pt-[9px]">
+          <div
+            class="h-[24px] w-[82px] rounded-[8px] bg-[#FDE9E9] flex items-center justify-center stateBox-red"
+          >
+            <span
+              class="px-[8.5px] py-[4px] text-[#CD3636] text-[10px] font-bold"
+              >TỪ CHỐI</span
+            >
+          </div>
+          <p class="ml-[5px]">
+            => Không được tham gia/tham gia sẽ không dược tính điểm.
+          </p>
+        </div>
+        <div class="flex pt-[9px]">
+          <div
+            class="h-[24px] rounded-[8px] bg-[#D9F9E6] flex items-center justify-center stateBox-green"
+          >
+            <span
+              class="px-[8.5px] py-[6px] text-[#2F9461] text-[10px] font-bold"
+              >ĐƯỢC CHO PHÉP</span
+            >
+          </div>
+          <p class="ml-[5px]">=> Được phép tham gia</p>
+        </div>
+      </div>
+    </div>
+    <div class="max-h-table overflow-auto">
+      <!-- fit-w-table -->
+      <div class="w-full">
+        <table
+          class="font-Manrope max-h-table w-full rounded-10px sticky overflow-auto"
+        >
+          <thead class="font-bold text-[#687588] text-[12px] bg-[#fafafa]">
+            <tr>
+              <th class="w-[70px]">STT</th>
+              <th class="w-[120px]">Mã HĐ</th>
+              <th class="grow items-start justify-start flex">Hoạt động</th>
+              <th class="w-[114px]">Số điểm</th>
+              <th class="w-[140px]">Tình trạng</th>
+              <!-- <th class="w-[200px]">Bình luận của CVHT</th> -->
+            </tr>
+          </thead>
+          <tbody class="font-Manrope text-[12px] text-black">
+            <tr
+              *ngFor="let data of dataReg_Result; let i = index"
+              class="text-center border-[1px]"
+            >
+              <td>{{ stt + i }}</td>
+              <td>{{ data.iddangKy }}</td>
+              <td class="text-left">{{ data.tenhdnk }}</td>
+              <td>{{ data.soDiem }}</td>
+              <td class="px-[16px] flex justify-center">
+                <div
+                  *ngIf="data.tinhTrangDuyet === false"
+                  class="h-[24px] w-[82px] rounded-[8px] bg-[#FDE9E9] flex items-center justify-center stateBox-red"
+                >
+                  <span
+                    class="px-[8.5px] py-[4px] text-[#CD3636] text-[10px] font-bold"
+                    >TỪ CHỐI</span
+                  >
+                </div>
+                <div
+                  *ngIf="data.tinhTrangDuyet === true"
+                  class="h-[24px] rounded-[8px] bg-[#D9F9E6] flex items-center justify-center stateBox-green"
+                >
+                  <span
+                    class="px-[8.5px] py-[4px] text-[#2F9461] text-[10px] font-bold"
+                    >ĐƯỢC CHO PHÉP</span
+                  >
+                </div>
+              </td>
+              <!-- <td>
+                                <button 
+                                    (click)="openPopupComment(data)"
+                                    class="p-[2px]">
+                                    <div class="flex justify-center items-center">
+                                        <i class="ph ph-chat-dots text-[18px]"></i>
+                                    </div>
+                                </button>
+                            </td> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="dataReg_Result && dataReg_Result.length > 0; else noData"></div>
+    <div
+      *ngIf="dataReg_Result && dataReg_Result.length > 0; else noDataButtons"
+      class="w-full mt-[16px] border-[1px] rounded-[10px] border-gray-300"
+    >
+      <div
+        class="bg-[#eaeef2] rounded-t-[10px] p-[10px] border-b-[1px] border-gray-300"
+      >
+        <p class="font-medium text-[14px]">Bình luận của giảng viên</p>
+      </div>
+      <div class="p-[10px]">
+        <textarea
+          [(ngModel)]="commentBySemester"
+          disabled
+          class="p-2 border-[1px] rounded-[10px] w-full max-h-[200px] overflow-y-auto break-all"
+        >
+        </textarea>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDataButtons>
+    <div class="items-center p-[24px]">
+      <div class="justify-center items-center flex">
+        <img src="../../../../assets/noData.png" class="w-[100px] h-[80px]" />
+      </div>
+      <p class="text-[14px] leading-[20px] text-[#57606a] text-center">
+        Không có dữ liệu !
+      </p>
+    </div>
+  </ng-template>
+
+  <ng-template #noData> </ng-template>
+</div>
+
+<div
+  *ngIf="isOpenPopup"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full font-Manrope"
+>
+  <div class="w-full h-full flex items-center justify-center">
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-50"
+    ></div>
+    <div
+      class="w-[500px] bg-white shadow-2xl p-[24px] rounded-[16px] relative z-10"
+    >
+      <div class="flex justify-between mb-[20px]">
+        <p class="font-Inter font-semibold text-[18px]">
+          Bình luận của Cố vấn học tập
+        </p>
+        <button (click)="closePopupComment()">
+          <div class="flex justify-center items-center">
+            <i class="ph ph-x text-[20px]"></i>
+          </div>
+        </button>
+      </div>
+      <div class="gap-[20px]">
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Tên hoạt động</p>
+          <input
+            [(ngModel)]="activitySelected.tenhdnk"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full">
+          <p class="font-medium text-[14px]">Lời bình luận</p>
+          <textarea
+            [(ngModel)]="commentBySemester"
+            class="p-2 border-[1px] rounded-[10px] w-full max-h-[200px] overflow-y-auto break-all"
+            disabled
+          >
+          </textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

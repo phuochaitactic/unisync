@@ -1,0 +1,43 @@
+th, td {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+thead {
+    position: sticky;
+    top: 0; /* Giữ phần thead ở trên cùng của phần tử cha */
+    background-color: #fafafa;
+    z-index: 1; /* Đảm bảo phần thead nằm trên cùng */
+}
+
+.h-table {
+    max-height: calc(100% - 38px - 50px);
+}
+
+.max-h-table {
+    max-height: 300px;
+}
+
+.overflow-auto {
+    box-sizing: border-box;
+}
+
+.bg-linearGradient {
+    background: linear-gradient(180deg, #29B475 0%, #1AAB69 100%);
+}
+
+.button:disabled {
+    background: black;
+}
+
+.border-export {
+    border-color: #1f2328;
+    opacity: 0.1;
+}
+
+@media (max-width: 1300px) {
+    .tb-1 {
+        min-width: max-content;
+    }
+    
+}

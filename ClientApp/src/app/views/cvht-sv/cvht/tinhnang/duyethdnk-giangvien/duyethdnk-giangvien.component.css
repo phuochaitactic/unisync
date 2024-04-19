@@ -1,0 +1,175 @@
+th, td {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+thead {
+    position: sticky;
+    top: 0; /* Giữ phần thead ở trên cùng của phần tử cha */
+    background-color: #fafafa;
+    z-index: 1; /* Đảm bảo phần thead nằm trên cùng */
+}
+
+.h-table {
+    max-height: calc(100% - 38px - 50px);
+}
+
+.max-h-table {
+    max-height: 520px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup-overlay::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Màu xám với độ trong suốt 50% */
+    z-index: -1; /* Đặt z-index thấp hơn để không che khu vực của popup */
+  }
+  .popup {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .button {
+    position: relative;
+    cursor: pointer;
+    width: 44px;
+    height: 23px;
+    padding: 2px;
+    background-color: #d2d2d2;
+    border-radius: 50px;
+    transition: 0.2s;
+  }
+  
+  .button::before {
+    position: absolute;
+    content: '';
+    background-color: gray;
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+    transition: 0.2s;
+  }
+  
+input:checked + .button {
+    background-color: #0078d7;
+}
+
+input:checked + .button::before {
+    transform: translateX(20px);
+    background-color: #FAFAFA;
+}
+
+.animate-in {
+    animation: fade-in 0.5s ease;
+  }
+  
+  .animate-out {
+    animation: fadeOut 0.5s ease;
+  }
+  
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+  
+    to {
+      opacity: 0;
+    }
+  }
+
+  .tooltip-container {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    background-color: #3498db;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .tooltip-content {
+    position: absolute;
+    top: 100%; /* Place the tooltip below the container */
+    left: 50%; /* Center the tooltip horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  
+  .tooltip-container:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .bg-linearGradient {
+    background: linear-gradient(180deg, #29B475 0%, #1AAB69 100%)
+  }
+
+  .stateBox-red {
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 2px rgba(243, 65, 65, 0.40), 0px 2px 5px 0px rgba(243, 65, 65, 0.08);
+  }
+
+  .stateBox-green {
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 2px rgba(83, 180, 131, 0.40), 0px 2px 5px 0px rgba(83, 180, 131, 0.08)
+  }
+
+  .button-delete {
+    background: pink
+  }
+
+  .button-delete:disabled {
+    background: lightgray
+  }
+
+  .bg-status-red {
+    background-color: #FDE9E9;
+    opacity: 0.5
+  }
+
+  .bg-status-green {
+    background-color: #D9F9E6;
+    opacity: 0.5
+  }
+
+  @media (max-width: 1000px) {
+    .fit-w-table {
+      max-width: fit-content;
+    }
+  
+    table {
+      min-width: max-content;
+    }
+    
+  }
+

@@ -1,0 +1,2290 @@
+<div class="bg-white rounded-[16px] m-[16px] chung height-table">
+  <div class="flex justify-between items-center px-5 py-[16px]">
+    <div class="flex flex-col items-start">
+      <h1
+        class="text-black font-bold leading-[28px] text-fieldskhoa font-chu2 text-[22px]"
+      >
+        {{ title }}
+      </h1>
+      <span
+        class="font-medium text-[14px] leading-[22px] text-[#687588] font-chu2 mt-[8px]"
+        >Quản lý Hoạt động ngoại khoá</span
+      >
+    </div>
+
+    <div class="flex gap-4">
+      <button
+        (click)="showAdd()"
+        class="flex p-4 h-[40px] font-chu2 justify-center items-center hover:bg-[#29B475] hover:border-[#29B475] hover:text-[white] border-black border-[1px] gap-[8px] bg-[#16252D] rounded-[8px] text-white transition-all"
+      >
+        <i class="ph-bold ph-plus text-[20px]"></i>
+        <p class="text-[14px] font-medium font-chu2">Thêm Hoạt động mới</p>
+      </button>
+
+      <button
+        *ngIf="checkExport"
+        (click)="exportToExcel()"
+        class="flex p-3 h-[40px] justify-center items-center gap-[8px] hover:bg-[#29B475] hover:border-[#29B475] border-black hover:text-white text-[#1F2732] border-[1px] rounded-[8px] transition-all"
+      >
+        <i class="ph-bold ph-file-arrow-down text-[20px]"></i>
+        <p class="text-[14px] font-medium font-chu2">Xuất dữ liệu</p>
+      </button>
+    </div>
+  </div>
+
+  <div class="flex px-[20px] py-[8px] items-center justify-end w-full">
+    <div class="relative w-full">
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <i class="ph-bold ph-magnifying-glass text-[20px]"></i>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        name="timBH"
+        class="block w-full h-[44px] p-2 pl-10 text-sm border-[#EBEAED] rounded-[10px] text-chung"
+        placeholder="Tìm Kiếm"
+        required
+      />
+    </div>
+
+    <div class="flex gap-4 ml-[16px]">
+      <div>
+        <button
+          (click)="toggleDropDown2()"
+          [ngClass]="{
+            'active-button': activeButton === 'FT Tên',
+            'active-dropdown': filter2
+          }"
+          class="text-black whitespace-nowrap max-w-[300px] truncate p-2 h-[44px] hover:border-[#29B475] focus:outline-none border-[1px] rounded-[10px] text-[14px] font-medium font-chu2 px-4 py-2.5 text-center inline-flex items-center"
+          type="button"
+        >
+          <p class="max-w-[100px] truncate">
+            {{ tbh }}
+          </p>
+          <i class="ph-bold ph-caret-down text-[15px] pl-[5px]"></i>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div
+          *ngIf="filter2"
+          class="z-10 absolute bg-white divide-y w-[150px] divide-gray-100 rounded-lg shadow dark:bg-gray-700 h-[200px] overflow-y-auto"
+        >
+          <ul
+            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="filtertenbh"
+          >
+            <li>
+              <a
+                class="block px-4 py-2 hover:bg-gray-100 font-chu2 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                (click)="resetFilterNK()"
+              >
+                Tất Cả Hoạt Động
+              </a>
+            </li>
+            <li
+              *ngFor="let lop of ftenNhhk | uniqueFilter : 'tenHdnk'"
+              value="tenHdnk"
+            >
+              <a
+                (click)="filterNam(lop.tenHdnk)"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer font-chu2"
+              >
+                <p class="max-w-[100px] truncate">
+                  {{ lop.tenHdnk }}
+                </p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full">
+    <div
+      class="overflow-y-auto h-[67.7vh] rounded-[16px] m-[16px] max-w-[76.6vw]"
+    >
+      <table class="font-[Manrope] text-chung sticky">
+        <thead class="font-bold bg-[#FAFAFA] text-[#687588]">
+          <tr>
+            <th class="pl-[16px] pr-[4px]">
+              <input
+                (change)="checkAllRows()"
+                [checked]="checkAll"
+                type="checkbox"
+                class="h-[16px] w-[16px] rounded-md border-[1px] border-solid border-[#CBD5E1] checked:bg-[#29B475] focus:ring-[#29B475]"
+              />
+            </th>
+            <th class="text-center">
+              <button class="flex items-center gap-4 pl-[15px]">
+                STT
+                <div class="pt-1">
+                  <i *ngIf="this.isIcon" class="ph-bold ph-arrow-fat-up"></i>
+                  <i *ngIf="!this.isIcon" class="ph-bold ph-arrow-fat-down"></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Tên Hoạt Động
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Tên Khoa
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Giảng Viên Quản Lí
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Phạm Vi Tổ Chức
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Số Lượng DK
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Tên Phòng
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Địa Điểm
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Thời Lượng Tổ Chức
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Buổi Ưu Tiên
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Năm Học
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Ngày Bắt Đầu
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Ngày Kết Thúc
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Ghi Chú
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="ten">
+              <button class="flex items-center gap-4">
+                Tạo Bởi
+                <div class="pt-1">
+                  <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                  <i
+                    *ngIf="!this.isIcons"
+                    class="ph-bold ph-arrow-fat-down"
+                  ></i>
+                </div>
+              </button>
+            </th>
+            <th class="text-center w-[100px]">Tình Trạng</th>
+            <th class="text-center w-[140px]">Tuỳ Chọn</th>
+          </tr>
+        </thead>
+
+        <tbody class="text-center font-normal" *ngIf="!loading">
+          <tr
+            *ngFor="
+              let lop of ftenNhhk
+                | filter : 'tenHdnk' : bh
+                | search : searchText
+                | paginate : { itemsPerPage: 15, currentPage: p };
+              let i = index
+            "
+          >
+            <td class="w-[5px] pl-[16px] pr-[4px]">
+              <input
+                (change)="selectOne($event, i)"
+                [checked]="selectedItems[i]"
+                type="checkbox"
+                class="h-[16px] w-[16px] rounded-md border-[1px] border-solid border-[#CBD5E1] checked:bg-[#29B475] focus:ring-[#29B475]"
+              />
+            </td>
+            <td class="text-center">{{ stt + i }}</td>
+            <td
+              class="ten max-w-[200px] truncate hover:text-[#29B475] hover:underline cursor-pointer"
+              (click)="detail(lop)"
+            >
+              {{ lop.tenHdnk !== null ? lop.tenHdnk : "Trống" }}
+            </td>
+            <td class="ten pr-[10px] pl-[10px] max-w-[200px] truncate">
+              <ng-container *ngIf="lop.tenKhoa !== null; else noValue">{{
+                lop.tenKhoa
+              }}</ng-container>
+              <ng-template #noValue>Không</ng-template>
+            </td>
+            <td class="ten">
+              {{ lop.tenGiangVien !== null ? lop.tenGiangVien : "Trống" }}
+            </td>
+            <td class="ten">
+              {{ lop.phamVi !== null ? lop.phamVi : "Trống" }}
+            </td>
+            <td class="text-center">{{ lop.soLuongDuKien }}</td>
+            <td class="ten">
+              {{ lop.tenPhong !== null ? lop.tenPhong : "Trống" }}
+            </td>
+
+            <td class="ten">
+              {{ lop.tenDiaDiem !== null ? lop.tenDiaDiem : "Trống" }}
+            </td>
+            <td class="ten pl-[10px]">
+              {{ lop.thoiLuongToChuc !== null ? lop.thoiLuongToChuc : "Trống" }}
+            </td>
+            <td class="ten">
+              {{ lop.buoiUuTien !== null ? lop.buoiUuTien : "Trống" }}
+            </td>
+            <td class="ten max-w-[150px] truncate pr-[5px]">
+              {{ lop.tenNHHK !== null ? lop.tenNHHK : "Trống" }}
+            </td>
+            <td class="ten">{{ lop.ngayBd | date : "dd/MM/yyyy" }}</td>
+            <td class="ten">{{ lop.ngayKt | date : "dd/MM/yyyy" }}</td>
+            <td class="ten">
+              {{ lop.ghiChu !== null ? lop.ghiChu : "Trống" }}
+            </td>
+            <td class="ten pr-[12px]">
+              {{ lop.createdBy !== null ? lop.createdBy : "Trống" }}
+            </td>
+            <td class="text-center">
+              <ng-container *ngIf="lop.tinhTrangDuyet; else chuaDuyet">
+                <p
+                  class="bg-[#C1FBCF] text-[#00BE67] py-[4px] px-[16px] rounded-lg font-bold text-[11px]"
+                >
+                  Đã duyệt
+                </p>
+              </ng-container>
+              <ng-template #chuaDuyet>
+                <p
+                  class="bg-[#FFDDC9] py-[4px] px-[16px] rounded-lg font-bold text-[11px] text-[#E0221F]"
+                >
+                  Chưa duyệt
+                </p>
+              </ng-template>
+            </td>
+            <td class="text-center">
+              <ng-container *ngIf="lop.tinhTrangDuyet; else chuaDuyets">
+                <div class="flex justify-center gap-[10px]">
+                  <button
+                    class="hover:scale-110 transition-transform border-[1px] border-[#EDF2F7] rounded-[8px]"
+                    (click)="detail(lop)"
+                  >
+                    <i class="ph ph-eye text-[#00BE67] p-[8px] text-[14px]"></i>
+                  </button>
+                </div>
+              </ng-container>
+              <ng-template #chuaDuyets>
+                <div class="flex justify-center gap-[10px]">
+                  <button
+                    (click)="editLop(lop)"
+                    class="hover:scale-110 transition-transform border-[1px] border-[#EDF2F7] rounded-[8px]"
+                  >
+                    <i
+                      class="ph-bold ph-pencil-simple text-[#0047BF] p-[8px] text-[14px]"
+                    ></i>
+                  </button>
+                  <button
+                    (click)="onDelete(lop)"
+                    class="hover:scale-110 transition-transform border-[1px] border-[#EDF2F7] rounded-[8px]"
+                  >
+                    <i
+                      class="ph-bold ph-trash text-[#E0221F] p-[8px] text-[14px]"
+                    ></i>
+                  </button>
+                </div>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ngx-skeleton-loader
+        *ngIf="loading"
+        count="98"
+        [theme]="{
+          width: '130px',
+          height: '30px',
+          left: '20px',
+          margin: '10px',
+          'border-radius': '10px',
+          background: '#F5F5F5'
+        }"
+        appearance="line"
+      ></ngx-skeleton-loader>
+
+      <div
+        class="flex flex-col items-center font-chu2 pt-[32px]"
+        *ngIf="
+          !loading &&
+          (ftenNhhk | filter : 'tenHdnk' : bh | search : searchText).length ===
+            0
+        "
+      >
+        <img src="../../../../assets/empty1.png" class="w-[87px] h-[87px]" />
+
+        <h1 class="text-[#718096] text-[18px] font-bold pt-[16px]">
+          Dữ liệu trống
+        </h1>
+        <p class="text-[14px] font-normal text-[#A0AEC0]">
+          Vui lòng nhập dữ liệu lên hệ thống
+        </p>
+      </div>
+      <div class="flex justify-between pt-[16px] py-[10px] relative">
+        <div>
+          <button
+            (click)="onDeleteAll()"
+            *ngIf="showDeleteAllButton"
+            class="flex p-3 text-btn h-[35px] justify-center items-center gap-[8px] button-addkhoa bg-red-600 hover:bg-red-400 text-white font-chu2 transition-all cursor-pointer"
+          >
+            Xoá Tất Cả
+          </button>
+        </div>
+
+        <div
+          class="flex justify-end items-center font-chu2"
+          *ngIf="
+            ftenNhhk?.length > 15 &&
+            (ftenNhhk | filter : 'tenHdnk' : bh | search : searchText)?.length >
+              15
+          "
+        >
+          <h1 class="text-[12px] text-fields pb-4">
+            Showing 1 to 15 of
+            {{ ftenNhhk ? ftenNhhk.length : 0 }} entries
+          </h1>
+          <pagination-controls
+            class="text-[12px]"
+            (pageChange)="p = $event"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showModaladd"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div
+    class="w-[800px] bg-white font-Manrope rounded-[16px] h-[700px] overflow-y-auto"
+  >
+    <div class="p-[24px]">
+      <span class="font-Inter font-semibold text-[18px]"
+        >Bước 1: Tạo hoạt động ngoại khóa</span
+      >
+      <div class="w-full mt-[24px] flex">
+        <div class="flex-1">
+          <div class="mb-[12px]">
+            <span class="font-medium font-chu2 text-[14px]">Mã Hoạt Động</span>
+            <input
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="HD01"
+              [(ngModel)]="addLop.maHdnk"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <span class="font-medium font-chu2 text-[14px]"
+              >Tên Hoạt Động Ngoại Khoá</span
+            >
+            <input
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Hoạt động hiến máu nhân đạo"
+              [(ngModel)]="addLop.tenHdnk"
+            />
+          </div>
+          <!-- [(ngModel)]="selectedTeacher"
+                (click)="showDropdownTeacher()" -->
+          <div class="mb-[5px]">
+            <h1 class="font-medium text-[14px]">
+              Tạo điểm cho vai trò tham gia
+            </h1>
+          </div>
+          <div class="flex justify-between">
+            <div class="mb-[12px]">
+              <span class="font-medium font-chu2 text-[14px]">Tham Gia</span>
+              <input
+                class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+                placeholder="5"
+                [(ngModel)]="addLop.diemhdnk"
+              />
+              <div
+                class="w-[351.5px] h-[100px] rounded-b-[6px] bg-white absolute"
+                *ngIf="dropdownTeacher"
+              ></div>
+            </div>
+            <div class="mb-[12px]">
+              <span class="font-medium font-chu2 text-[14px]">Cổ Vũ</span>
+              <input
+                class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+                placeholder="3"
+                [(ngModel)]="addLop.coVu"
+              />
+            </div>
+            <div class="mb-[12px]">
+              <span class="font-medium font-chu2 text-[14px]">Ban Tổ Chức</span>
+              <input
+                class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+                placeholder="7"
+                [(ngModel)]="addLop.banToChuc"
+              />
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Kỹ Năng Hoạt Động Ngoại Khoá</label
+            >
+
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50 transition-all"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="toggleOptionsHD()"
+              >
+                {{ selectedOptionHD || "Chọn Kỹ Năng Hoạt Động Ngoại Khoá" }}
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+
+            <div
+              class="w-[750px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsHD"
+            >
+              <ul>
+                <li
+                  (click)="clickHT()"
+                  class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer transition-all"
+                >
+                  Học thuật, kỹ năng chuyên ngành
+                </li>
+                <li
+                  (click)="clickVH()"
+                  class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer transition-all"
+                >
+                  Văn hoá, Văn Nghệ
+                </li>
+                <li
+                  (click)="clickTT()"
+                  class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer transition-all"
+                >
+                  Thể thao
+                </li>
+                <li
+                  (click)="clickCD()"
+                  class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer transition-all"
+                >
+                  Vì cộng đồng tình nguyện
+                </li>
+                <li
+                  (click)="clickDD()"
+                  class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer transition-all"
+                >
+                  Diễn đàn, hội thảo
+                </li>
+                <li
+                  (click)="clickHN()"
+                  class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer transition-all"
+                >
+                  Hội nhập toàn cầu
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Mã Điều</label
+            >
+
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50 transition-all"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="toggleOptions()"
+              >
+                {{ selectedOption || "Chọn Mã Điều" }}
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+
+            <div
+              class="w-[750px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptions"
+            >
+              <ul
+                *ngFor="let lop of dropDieu"
+                class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+              >
+                <li
+                  class="font-[Manrope] text-[13px]"
+                  (click)="selectOption(lop.maDieu)"
+                >
+                  {{ lop.maDieu }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Nội Dung Minh Chứng</label
+            >
+
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50 transition-all"
+                aria-haspopup="true"
+                aria-expanded="true"
+                [disabled]="!selectOption"
+                (click)="toggleOptionsND()"
+              >
+                <h1 class="max-w-[400px] truncate" *ngIf="!selectedOption">
+                  Hãy chọn Mã Điều
+                </h1>
+                <h1 class="max-w-[400px] truncate" *ngIf="selectedOption">
+                  {{ selectedOptionND || "Chọn Nội Dung Minh Chứng" }}
+                </h1>
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+
+            <div
+              class="w-[750px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsND && selectedOption !== ''"
+            >
+              <ng-container *ngIf="dropNDMC.length > 0; else noDataMessage">
+                <ul
+                  *ngFor="let lop of dropNDMC"
+                  class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                >
+                  <li
+                    class="font-[Manrope] text-[13px]"
+                    (click)="selectOptionND(lop.noiDungMinhChung)"
+                  >
+                    {{ lop.noiDungMinhChung }}
+                  </li>
+                </ul>
+              </ng-container>
+              <ng-template #noDataMessage>
+                <p class="font-[Manrope] text-[13px] p-2">
+                  Không có nội dung minh chứng trong điều này
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 grid-row-start-4 w-full gap-4 mt-[24px]">
+        <div class="text-end pt-1 flex justify-end">
+          <button
+            (click)="closeModalAdd()"
+            class="flex-1 py-[11px] font-chu2 rounded-[10px] border-[1px] hover:bg-[#F8F8F8] hover:border-[#F8F8F8] text-[#00000] border-black items-center transition-all"
+          >
+            <h1 class="text-[16px] leading-6 font-chu3 font-normal">Hủy</h1>
+          </button>
+          <button
+            (click)="addHDNKMoi()"
+            class="flex-[2] py-[11px] ml-[20px] rounded-[10px] items-center transition-all bg-[#29B475]"
+          >
+            <h1
+              class="text-[16px] leading-6 text-white font-chu2 font-semibold"
+            >
+              Tiếp theo
+            </h1>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showModaladd2"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="w-[800px] bg-white font-Manrope rounded-[16px] overflow-y-auto">
+    <div class="p-[24px]">
+      <span class="font-semibold font-Inter text-[14px]"
+        >Bước 2: Thêm Dữ Liệu Hoạt Động Ngoại Khoá</span
+      >
+      <div class="w-full mt-[24px] flex">
+        <div class="flex-1">
+          <div class="mb-[12px]">
+            <span class="font-medium font-chu2 text-[14px]"
+              >Tên Hoạt Động Ngoại Khoá</span
+            >
+            <input
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              disabled
+              [value]="tenHD"
+              [(ngModel)]="addLop.tenHdnk"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="font-medium font-chu2 text-[14px]"
+              >Bậc Hệ Ngành</label
+            >
+
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="toggleOptionsBHN()"
+              >
+                {{ selectedOptionBHN || "Chọn bậc hệ ngành" }}
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+
+            <div
+              class="w-[750px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsBHN"
+            >
+              <ul
+                *ngFor="let lop of dropBHN"
+                class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+              >
+                <li
+                  class="font-[Manrope] text-[13px]"
+                  (click)="selectOptionBHN(lop.tenBh)"
+                >
+                  {{ lop.tenBh }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="font-medium font-chu2 text-[14px]"
+              >Tên Năm Học-Học Kỳ</label
+            >
+
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="toggleOptionsNH()"
+              >
+                {{ selectedOptionNH || "Chọn năm học học kỳ" }}
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="w-[750px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsNH"
+            >
+              <ul
+                *ngFor="let lop of dropNH"
+                class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+              >
+                <li
+                  class="font-[Manrope] text-[13px]"
+                  (click)="selectOptionNH(lop.tenNhhk)"
+                >
+                  {{ lop.tenNhhk }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 grid-row-start-4 w-full gap-4 mt-[24px]">
+        <div class="text-end pt-1 flex justify-end">
+          <button
+            (click)="closeModalAdd2()"
+            class="flex-1 py-[11px] font-chu2 rounded-[10px] border-[1px] hover:bg-[#F8F8F8] hover:border-[#F8F8F8] text-[#00000] border-black items-center transition-all"
+          >
+            <h1 class="text-[16px] leading-6 font-chu3 font-normal">Huỷ</h1>
+          </button>
+          <button
+            (click)="addHDNKMoi2()"
+            class="flex-[2] py-[11px] ml-[20px] rounded-[10px] items-center transition-all bg-[#29B475]"
+          >
+            <h1
+              class="text-[16px] leading-6 text-white font-chu2 font-semibold"
+            >
+              Tiếp tục
+            </h1>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showModaladd3"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="w-[800px] bg-white font-Manrope rounded-[16px] p-[24px]">
+    <span class="font-Inter font-semibold text-[18px]"
+      >Bước 3: Thêm thông Tin Hoạt Động Ngoại Khoá
+    </span>
+    <div class="w-full mt-[24px] flex">
+      <div class="flex-1">
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]">Tên hoạt động</span>
+          <input
+            class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+            placeholder="Hoạt động"
+            [value]="tenHD"
+            disabled
+          />
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]"
+            >Tên Năm Học - Học Kỳ
+          </span>
+          <input
+            class="w-full h-[44px] px-[20px] cursor-not-allowed py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+            placeholder="Hoạt động"
+            [value]="tenNhhk"
+            disabled
+          />
+        </div>
+        <div class="mb-[12px]">
+          <label class="font-medium font-chu2 text-[14px]"
+            >Phạm Vi Tổ Chức</label
+          >
+
+          <div>
+            <button
+              type="button"
+              class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+              aria-haspopup="true"
+              aria-expanded="true"
+              (click)="toggleOptionsN()"
+            >
+              <p class="max-w-[350px] truncate">
+                {{ selectedOptionN || "Chọn Ngành" }}
+              </p>
+
+              <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                <i class="ph-bold ph-caret-down"></i>
+              </div>
+            </button>
+          </div>
+          <div
+            class="w-[351.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+            *ngIf="showOptionsN"
+          >
+            <ul
+              *ngFor="let lop of tenNganh | uniqueFilter : 'tenNgh'"
+              class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+            >
+              <li
+                class="font-[Manrope] text-[13px]"
+                (click)="selectOptionN(lop.tenNgh)"
+              >
+                {{ lop.tenNgh }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]"
+            >Giảng viên quản lý</span
+          >
+          <div>
+            <button
+              type="button"
+              class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu2 hover:bg-gray-50"
+              aria-haspopup="true"
+              aria-expanded="true"
+              (click)="showDropdownTeacher()"
+            >
+              {{ selectedOptionGV || "Chọn giảng viên" }}
+
+              <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                <i class="ph-bold ph-caret-down"></i>
+              </div>
+            </button>
+          </div>
+          <div
+            class="w-[351.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+            *ngIf="dropdownTeacher"
+          >
+            <ul
+              *ngFor="let lop of tenGV"
+              class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+            >
+              <li
+                class="font-[Manrope] text-[13px]"
+                (click)="selectOptionGV(lop.hoTen)"
+              >
+                {{ lop.hoTen }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]"
+            >Số lượng sinh viên tham gia dự kiến</span
+          >
+          <input
+            class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+            placeholder="15"
+            [(ngModel)]="addLop.soLuongDuKien"
+          />
+        </div>
+        <div class="mb-[12px]">
+          <label class="font-medium font-chu2 text-[14px]">Tên Địa Điểm</label>
+
+          <div>
+            <button
+              type="button"
+              class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+              aria-haspopup="true"
+              aria-expanded="true"
+              (click)="toggleOptionsDD()"
+            >
+              {{ selectedOptionDD || "Chọn địa điểm" }}
+
+              <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                <i class="ph-bold ph-caret-down"></i>
+              </div>
+            </button>
+          </div>
+          <div
+            class="w-[351.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+            *ngIf="showOptionsDD"
+          >
+            <ul
+              *ngFor="let lop of dropDD"
+              class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+            >
+              <li
+                class="font-[Manrope] text-[13px]"
+                (click)="selectOptionDD(lop.tenDiaDiem)"
+              >
+                {{ lop.tenDiaDiem }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div
+        class="w-[1px] h-[500px] flex justify-center items-center bg-[#E9EAEC] mx-[24px]"
+      ></div>
+      <div class="flex-1 max-h-[500px] overflow-y-auto">
+        <div class="mb-[12px] flex items-center">
+          <span class="font-medium font-chu2 text-[14px]">Phòng tổ chức: </span>
+          <div class="bg-gray-300 w-[50px] flex rounded-[50px] ml-[10px]">
+            <input
+              type="checkbox"
+              id="check"
+              class="hidden"
+              [(ngModel)]="checked"
+            />
+            <label for="check" class="button"></label>
+          </div>
+        </div>
+        <div
+          class="my-[12px]"
+          *ngIf="checked"
+          [ngClass]="{
+            'animate-in': checked,
+            'animate-out': !checked
+          }"
+        >
+          <div class="mb-[12px]">
+            <label class="font-medium font-chu2 text-[14px]">Tên Phòng</label>
+
+            <div>
+              <button
+                type="button"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                [disabled]="!selectedOptionDD"
+                (click)="toggleOptionsP()"
+              >
+                <h1 class="max-w-[400px] truncate" *ngIf="!selectedOptionDD">
+                  Hãy chọn Địa điểm
+                </h1>
+                <h1 class="max-w-[400px] truncate" *ngIf="selectedOptionDD">
+                  {{ selectedOptionP || "Chọn phòng" }}
+                </h1>
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="w-[351.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] absolute bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsP && selectedOptionDD !== ''"
+            >
+              <ng-container *ngIf="dropP2.length > 0; else noDataMessageP">
+                <ul
+                  *ngFor="let lop of dropP2"
+                  class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                >
+                  <li
+                    class="font-[Manrope] text-[13px]"
+                    (click)="selectOptionP(lop.tenPhong)"
+                  >
+                    {{ lop.tenPhong }}
+                  </li>
+                </ul>
+              </ng-container>
+              <ng-template #noDataMessageP>
+                <p class="font-[Manrope] text-[13px] p-2">
+                  Không có phòng ở địa điểm này
+                </p>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="flex mb-[12px]">
+          <div class="flex-1">
+            <span class="font-medium font-chu2 text-[14px]"
+              >Thời lượng tổ chức</span
+            >
+            <input
+              type="time"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Thời lượng tổ chức "
+              [(ngModel)]="addLop.thoiLuongToChuc"
+            />
+          </div>
+          <div
+            class="w-[1px] flex h-[20px] justify-end items-center bg-[#E9EAEC] mx-[12px] mt-[40px]"
+          ></div>
+          <div class="flex-1">
+            <div>
+              <label class="font-medium font-chu2 text-[14px]"
+                >Buổi Ưu Tiên</label
+              >
+
+              <div>
+                <button
+                  type="button"
+                  class="inline-flex mt-[5px] justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-[20px] py-[11px] bg-white text-sm font-chu3 hover:bg-gray-50"
+                  aria-haspopup="true"
+                  aria-expanded="true"
+                  (click)="toggleOptionsBuoi()"
+                >
+                  {{ selectedOptionBuoi || "Chọn Buổi" }}
+
+                  <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                    <i class="ph-bold ph-caret-down"></i>
+                  </div>
+                </button>
+              </div>
+
+              <div
+                class="w-[160px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white absolute rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+                *ngIf="showOptionsBuoi"
+              >
+                <ul>
+                  <li
+                    (click)="selectOptionBuoi()"
+                    class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                  >
+                    Buổi sáng
+                  </li>
+                  <li
+                    (click)="selectOptionBuoiTT()"
+                    class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                  >
+                    Buổi trưa
+                  </li>
+                  <li
+                    (click)="selectOptionBuoiC()"
+                    class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                  >
+                    Buổi chiều
+                  </li>
+                  <li
+                    (click)="selectOptionBuoiT()"
+                    class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                  >
+                    Buổi tối
+                  </li>
+                  <li
+                    (click)="selectOptionBuoiCN()"
+                    class="font-[Manrope] text-[13px] border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                  >
+                    Cả Ngày
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]">Ngày bắt đầu</span>
+          <input
+            type="datetime-local"
+            class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+            [(ngModel)]="addLop.ngayBd"
+            placeholder="01-10-2023"
+            [min]="currentDate"
+          />
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]">Ngày kết thúc</span>
+          <input
+            type="datetime-local"
+            class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+            [(ngModel)]="addLop.ngayKt"
+            placeholder="02-10-2024"
+            [min]="addLop.ngayBd"
+          />
+        </div>
+        <div class="mb-[12px]">
+          <label class="font-medium font-chu2 text-[14px]"> Khoa Tổ Chức</label>
+          <input
+            class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+            [value]="taoboi"
+            disabled
+          />
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]"
+            >Hình Ảnh Chương Trình</span
+          >
+          <button class="flex items-center justify-center w-full buttonn">
+            <label
+              for="dropzone-file"
+              class="flex flex-col items-center justify-center w-full h-[115px] mt-[12px] mb-[8px] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            >
+              <div class="flex items-center justify-center pt-5 pb-6">
+                <p
+                  class="text-[14px] ml-[7px] font-chu2 max-w-[300px] truncate"
+                >
+                  {{
+                    selectedFileName
+                      ? "Hình Đã Chọn: " + selectedFileName
+                      : "Tải Hình ảnh lên"
+                  }}
+                </p>
+                <input
+                  id="dropzone-file"
+                  type="file"
+                  class="hidden"
+                  (change)="onFileSelected($event)"
+                />
+              </div>
+            </label>
+          </button>
+          <p class="pt-[5px] text-[14px] text-[#A0AEC0]">
+            Lời khuyên: Hãy sử dụng hình ảnh 4:3 để có chất lượng tốt nhất.
+          </p>
+        </div>
+        <div class="mb-[12px]">
+          <span class="font-medium font-chu2 text-[14px]">Ghi Chú</span>
+          <textarea
+            class="w-full h-[95px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+            [(ngModel)]="addLop.ghiChu"
+          >
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 grid-row-start-4 w-full gap-4 mt-[24px]">
+      <div class="text-end pt-1 flex justify-end">
+        <button
+          (click)="closeModalAdd3()"
+          class="flex-1 py-[11px] font-chu2 rounded-[10px] border-[1px] hover:bg-[#F8F8F8] hover:border-[#F8F8F8] text-[#00000] border-black items-center transition-all"
+        >
+          <h1 class="text-[16px] leading-6 font-chu3 font-normal">Huỷ</h1>
+        </button>
+        <button
+          (click)="addHDNKMoi3()"
+          class="flex-[2] py-[11px] ml-[20px] rounded-[10px] items-center transition-all bg-[#29B475]"
+        >
+          <h1 class="text-[16px] leading-6 text-white font-chu2 font-semibold">
+            Hoàn Thành
+          </h1>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showModalEdit"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div
+    class="w-[1082px] bg-white font-Manrope rounded-[16px] h-[586px] overflow-y-auto"
+  >
+    <div class="p-[24px]">
+      <span class="font-Inter font-semibold text-[18px]"
+        >Cập Nhật Hoạt Động Ngoại Khoá</span
+      >
+      <div class="w-full mt-[24px] flex">
+        <div class="mb-[12px] pr-[10px]">
+          <div class="image-container">
+            <img
+              *ngIf="editingLop"
+              [src]="temporaryImage ? temporaryImage : editingLop.hinhAnh"
+              class="rounded-xl object-cover w-[512px] h-[384px] imgs"
+            />
+            <label for="file-upload" class="overlay cursor-pointer"
+              >Sửa Ảnh</label
+            >
+            <input
+              id="file-upload"
+              type="file"
+              style="display: none"
+              (change)="onFileSelectede($event)"
+            />
+          </div>
+        </div>
+        <div
+          class="flex-1 p-[10px] border-[1px] border-[#E9EAEC] rounded-[10px] max-h-[384px] overflow-y-auto"
+        >
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Hoạt Động Ngoại Khoá</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Hoạt động hiến máu nhân đạo"
+              [(ngModel)]="editingLop.tenHdnk"
+            />
+          </div>
+          <!-- [(ngModel)]="selectedTeacher"
+                (click)="showDropdownTeacher()" -->
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Khoa</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="15"
+              [(ngModel)]="editingLop.tenKhoa"
+              disabled
+            />
+            <div
+              class="w-[351.5px] h-[100px] rounded-b-[6px] bg-white absolute"
+              *ngIf="dropdownTeacher"
+            ></div>
+          </div>
+          <div class="mb-[12px]">
+            <span class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Giảng viên quản lý</span
+            >
+            <div>
+              <button
+                type="button"
+                *ngIf="editingLop"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu2 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="showDropdownTeacher1()"
+              >
+                <p class="max-w-[350px] truncate">
+                  {{
+                    selectedOptionGV1 || editingLop.tenGiangVien !== null
+                      ? editingLop.tenGiangVien
+                      : "Chọn giảng viên"
+                  }}
+                </p>
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="w-[751.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="dropdownTeacher1"
+            >
+              <ul
+                *ngFor="let lop of tenGV1"
+                class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+              >
+                <li
+                  class="font-[Manrope] text-[13px]"
+                  (click)="selectOptionGV1(lop.hoTen)"
+                >
+                  {{ lop.hoTen }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Phạm Vi Tổ Chức</label
+            >
+
+            <div>
+              <button
+                type="button"
+                *ngIf="editingLop"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="toggleOptionsN1()"
+              >
+                <p class="max-w-[350px] truncate">
+                  {{
+                    selectedOptionN1 || editingLop.phamVi !== null
+                      ? editingLop.phamVi
+                      : "Chọn Ngành"
+                  }}
+                </p>
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="w-[751.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsN1"
+            >
+              <ul
+                *ngFor="let lop of tenNganh1"
+                class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+              >
+                <li
+                  class="font-[Manrope] text-[13px]"
+                  (click)="selectOptionN1(lop.tenNgh)"
+                >
+                  {{ lop.tenNgh }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Số Lượng Dự Kiến</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Nhập số lượng dự kiến"
+              [(ngModel)]="editingLop.soLuongDuKien"
+            />
+          </div>
+
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Địa Điểm</label
+            >
+
+            <div>
+              <button
+                type="button"
+                *ngIf="editingLop"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                (click)="toggleOptionsDD1()"
+              >
+                {{
+                  selectedOptionDD1 || editingLop.tenDiaDiem !== null
+                    ? editingLop.tenDiaDiem
+                    : "Chọn địa điểm"
+                }}
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="w-[751.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white relative rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsDD1"
+            >
+              <ul
+                *ngFor="let lop of dropDD"
+                class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+              >
+                <li
+                  class="font-[Manrope] text-[13px]"
+                  (click)="selectOptionDD1(lop.tenDiaDiem)"
+                >
+                  {{ lop.tenDiaDiem }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Phòng</label
+            >
+
+            <div>
+              <button
+                type="button"
+                *ngIf="editingLop"
+                class="inline-flex justify-between w-full text-[14px] rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-chu3 hover:bg-gray-50"
+                aria-haspopup="true"
+                aria-expanded="true"
+                [disabled]="!selectedOptionDD1"
+                (click)="toggleOptionsP1()"
+              >
+                <h1 class="max-w-[400px] truncate" *ngIf="!selectedOptionDD1">
+                  Hãy chọn Địa điểm
+                </h1>
+                <h1 class="max-w-[400px] truncate" *ngIf="selectedOptionDD1">
+                  {{
+                    selectedOptionP1 || editingLop.tenPhong !== null
+                      ? editingLop.tenPhong
+                      : "Chọn phòng"
+                  }}
+                </h1>
+
+                <div class="ml-2 -mr-1 h-5 w-5 text-gray-400">
+                  <i class="ph-bold ph-caret-down"></i>
+                </div>
+              </button>
+            </div>
+            <div
+              class="w-[751.5px] max-h-[100px] overflow-y-auto rounded-b-[6px] bg-white relative rounded-md shadow-lg ring-1 ring-black ring-opacity-5"
+              *ngIf="showOptionsP1"
+            >
+              <ng-container *ngIf="dropP1.length > 0; else noDataMessages2">
+                <ul
+                  *ngFor="let lop of dropP1"
+                  class="border-khoa p-2 hover:bg-slate-100 cursor-pointer"
+                >
+                  <li
+                    class="font-[Manrope] text-[13px]"
+                    (click)="selectOptionP1(lop.tenPhong)"
+                  >
+                    {{ lop.tenPhong }}
+                  </li>
+                </ul>
+              </ng-container>
+              <ng-template #noDataMessages2>
+                <p class="font-[Manrope] text-[13px] p-2">
+                  Không có phòng ở địa điểm này
+                </p>
+              </ng-template>
+            </div>
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Thời Lượng Tổ Chức</label
+            >
+            <input
+              type="time"
+              *ngIf="editingLop"
+              (change)="onTimeChange($event)"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Nhập thời lượng tổ chức"
+              [(ngModel)]="editingLop.thoiLuongToChuc"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Buổi Ưu Tiên</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Nhập buổi ưu tiên"
+              [(ngModel)]="editingLop.buoiUuTien"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Ngày Bắt Đầu</label
+            >
+            <input
+              type="datetime-local"
+              *ngIf="editingLop"
+              [value]="editingLop.ngayBd"
+              (input)="onNgaySinhChanges($event)"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="15"
+              [min]="currentDate"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Ngày Kết Thúc</label
+            >
+            <input
+              type="datetime-local"
+              *ngIf="editingLop"
+              [value]="editingLop.ngayKt"
+              (input)="onNgaySinhChange($event)"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="15"
+              [min]="editingLop.ngayBd"
+            />
+          </div>
+
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Ghi Chú</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+              placeholder="Nhập ghi chú"
+              [(ngModel)]="editingLop.ghiChu"
+            />
+          </div>
+          <div class="pb-2">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tình Trạng</label
+            >
+            <div class="pt-2 mb-[12px] flex items-center">
+              <div class="bg-gray-300 w-[50px] flex rounded-[50px] ml-[10px]">
+                <input
+                  type="checkbox"
+                  id="checke"
+                  class="hidden"
+                  [(ngModel)]="checked"
+                />
+                <label for="checke" class="button"></label>
+              </div>
+              <div class="pl-2 font-chu2 text-[14px] leading-6 font-medium">
+                <h6>{{ checked ? "Duyệt" : "Không Duyệt" }}</h6>
+              </div>
+            </div>
+            <div
+              *ngIf="checked"
+              [ngClass]="{
+                'animate-in': checked,
+                'animate-out': !checked
+              }"
+            ></div>
+            <!-- <div class="flex">
+              <div class="pt-2 flex items-center">
+                <input
+                  [(ngModel)]="editingLop.tinhTrangDuyet"
+                  [checked]="editingLop.tinhTrangDuyet === true"
+                  [value]="true"
+                  name="phai"
+                  type="radio"
+                  class="w-4 h-5 block font-chu2 border-[#EBEAED] checked:bg-[#29B475] focus:ring-[#29B475] border-2 rounded-2xl"
+                />
+                <label class="pl-2 font-chu2 text-[14px] leading-6 font-medium">
+                  Duyệt
+                </label>
+              </div>
+              <div class="pt-2 flex items-center pl-6">
+                <input
+                  [(ngModel)]="editingLop.tinhTrangDuyet"
+                  [checked]="editingLop.tinhTrangDuyet === false"
+                  [value]="false"
+                  name="phai"
+                  type="radio"
+                  class="w-4 h-5 block font-chu2 border-[#EBEAED] checked:bg-[#29B475] focus:ring-[#29B475] border-2 rounded-2xl"
+                />
+                <label class="pl-2 font-chu2 text-[14px] leading-6 font-medium">
+                  Không Duyệt
+                </label>
+              </div>
+            </div> -->
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tạo Bởi</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Nhập Người Tạo"
+              [value]="taoboi"
+              disabled
+            />
+          </div>
+          <!-- <div class="mb-[12px]">
+              <span class="font-medium text-[14px]">Nội Dung Minh Chứng</span>
+              <input
+                class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+                placeholder="Minh chứng"
+                [(ngModel)]="addLop.noiDungMinhChung"
+              />
+            </div> -->
+        </div>
+      </div>
+      <div class="grid grid-cols-1 grid-row-start-4 w-full gap-4 mt-[24px]">
+        <div class="text-end pt-1 flex justify-end">
+          <button
+            (click)="closeModalEdit()"
+            class="flex-1 py-[11px] font-chu2 rounded-[10px] border-[1px] hover:bg-[#F8F8F8] hover:border-[#F8F8F8] text-[#00000] border-black items-center transition-all"
+          >
+            <h1 class="text-[16px] leading-6 font-chu3 font-normal">Hủy</h1>
+          </button>
+          <button
+            (click)="updateHdnkMoi()"
+            class="flex-[2] py-[11px] ml-[20px] rounded-[10px] items-center transition-all bg-[#29B475]"
+          >
+            <h1
+              class="text-[16px] leading-6 text-white font-chu2 font-semibold"
+            >
+              Cập Nhật
+            </h1>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+//detail
+<div
+  *ngIf="showdetail"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div
+    class="w-[1082px] bg-white font-Manrope rounded-[16px] h-[586px] overflow-y-auto"
+  >
+    <div class="p-[24px]">
+      <span class="font-Inter font-semibold text-[18px]"
+        >Thông Tin Hoạt Động Ngoại Khoá</span
+      >
+      <div class="w-full mt-[24px] flex">
+        <div class="mb-[12px] pr-[10px]">
+          <div>
+            <img
+              *ngIf="editingLop"
+              [src]="editingLop.hinhAnh"
+              class="rounded-xl object-cover w-[512px] h-[384px]"
+            />
+          </div>
+        </div>
+        <div
+          class="flex-1 p-[10px] border-[1px] border-[#E9EAEC] rounded-[10px] max-h-[384px] overflow-y-auto"
+        >
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Hoạt Động Ngoại Khoá</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Hoạt động hiến máu nhân đạo"
+              disabled
+              [(ngModel)]="editingLop.tenHdnk"
+            />
+          </div>
+          <!-- [(ngModel)]="selectedTeacher"
+                (click)="showDropdownTeacher()" -->
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Khoa</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              [(ngModel)]="editingLop.tenKhoa"
+              disabled
+            />
+            <div
+              class="w-[351.5px] h-[100px] rounded-b-[6px] bg-white absolute"
+              *ngIf="dropdownTeacher"
+            ></div>
+          </div>
+          <div class="mb-[12px]">
+            <span class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Giảng viên quản lý</span
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              [(ngModel)]="editingLop.tenGiangVien"
+              disabled
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Phạm Vi Tổ Chức</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              [(ngModel)]="editingLop.phamVi"
+              disabled
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Số Lượng Dự Kiến</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Nhập số lượng dự kiến"
+              disabled
+              [(ngModel)]="editingLop.soLuongDuKien"
+            />
+          </div>
+
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Địa Điểm</label
+            >
+
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              [(ngModel)]="editingLop.tenDiaDiem"
+              disabled
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tên Phòng</label
+            >
+
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              [value]="
+                editingLop.tenPhong !== null ? editingLop.tenPhong : 'Trống'
+              "
+              disabled
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Thời Lượng Tổ Chức</label
+            >
+            <input
+              type="time"
+              *ngIf="editingLop"
+              (change)="onTimeChange($event)"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Nhập thời lượng tổ chức"
+              disabled
+              [(ngModel)]="editingLop.thoiLuongToChuc"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Buổi Ưu Tiên</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Nhập buổi ưu tiên"
+              disabled=""
+              [(ngModel)]="editingLop.buoiUuTien"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Ngày Bắt Đầu</label
+            >
+            <input
+              type="datetime-local"
+              *ngIf="editingLop"
+              [value]="editingLop.ngayBd"
+              (input)="onNgaySinhChanges($event)"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              disabled
+              [min]="currentDate"
+            />
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Ngày Kết Thúc</label
+            >
+            <input
+              type="datetime-local"
+              *ngIf="editingLop"
+              [value]="editingLop.ngayKt"
+              (input)="onNgaySinhChange($event)"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="15"
+              disabled
+              [min]="editingLop.ngayBd"
+            />
+          </div>
+
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Ghi Chú</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Nhập ghi chú"
+              disabled
+              [(ngModel)]="editingLop.ghiChu"
+            />
+          </div>
+          <div class="pb-2">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tình Trạng</label
+            >
+            <div class="pt-2 mb-[12px] flex items-center">
+              <div class="bg-gray-300 w-[50px] flex rounded-[50px] ml-[10px]">
+                <input
+                  type="checkbox"
+                  id="checke"
+                  class="hidden"
+                  [(ngModel)]="checked"
+                  disabled
+                />
+                <label for="checke" class="button"></label>
+              </div>
+              <div
+                class="pl-2 font-chu2 text-[14px] leading-6 font-medium cursor-not-allowed"
+              >
+                <h6>{{ checked ? "Duyệt" : "Không Duyệt" }}</h6>
+              </div>
+            </div>
+            <div
+              *ngIf="checked"
+              [ngClass]="{
+                'animate-in': checked,
+                'animate-out': !checked
+              }"
+            ></div>
+            <!-- <div class="flex">
+              <div class="pt-2 flex items-center">
+                <input
+                  [(ngModel)]="editingLop.tinhTrangDuyet"
+                  [checked]="editingLop.tinhTrangDuyet === true"
+                  [value]="true"
+                  name="phai"
+                  type="radio"
+                  class="w-4 h-5 block font-chu2 border-[#EBEAED] checked:bg-[#29B475] focus:ring-[#29B475] border-2 rounded-2xl"
+                />
+                <label class="pl-2 font-chu2 text-[14px] leading-6 font-medium">
+                  Duyệt
+                </label>
+              </div>
+              <div class="pt-2 flex items-center pl-6">
+                <input
+                  [(ngModel)]="editingLop.tinhTrangDuyet"
+                  [checked]="editingLop.tinhTrangDuyet === false"
+                  [value]="false"
+                  name="phai"
+                  type="radio"
+                  class="w-4 h-5 block font-chu2 border-[#EBEAED] checked:bg-[#29B475] focus:ring-[#29B475] border-2 rounded-2xl"
+                />
+                <label class="pl-2 font-chu2 text-[14px] leading-6 font-medium">
+                  Không Duyệt
+                </label>
+              </div>
+            </div> -->
+          </div>
+          <div class="mb-[12px]">
+            <label class="pb-3 font-chu2 text-[14px] leading-6 font-medium"
+              >Tạo Bởi</label
+            >
+            <input
+              *ngIf="editingLop"
+              class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px] cursor-not-allowed"
+              placeholder="Nhập Người Tạo"
+              [value]="taoboi"
+              disabled
+            />
+          </div>
+          <!-- <div class="mb-[12px]">
+              <span class="font-medium text-[14px]">Nội Dung Minh Chứng</span>
+              <input
+                class="w-full h-[44px] px-[20px] py-[11px] border-[1px] rounded-[10px] border-[#E9EAEC] font-normal text-[14px] mt-[5px]"
+                placeholder="Minh chứng"
+                [(ngModel)]="addLop.noiDungMinhChung"
+              />
+            </div> -->
+        </div>
+      </div>
+      <div class="grid grid-cols-1 grid-row-start-4 w-full gap-4 mt-[24px]">
+        <div class="text-end pt-1 flex justify-center">
+          <button
+            (click)="closeModalD()"
+            class="flex-1 py-[11px] max-w-[40vw] font-chu2 rounded-[10px] border-[1px] hover:bg-[#F8F8F8] hover:border-[#F8F8F8] text-[#00000] border-black items-center transition-all"
+          >
+            <h1 class="text-[16px] leading-6 font-chu3 font-normal">Đóng</h1>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- popup excel -->
+<div
+  *ngIf="showExcel"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="relative p-4 w-[390px] max-w-2xl max-h-full">
+    <!-- Modal content -->
+    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+      <!-- Modal header -->
+      <div
+        class="flex items-center justify-between p-[12px] border-b rounded-t dark:border-gray-600"
+      >
+        <div>
+          <p class="text-[16px] leading-[24px] font-bold font-chu2">
+            Nhập dữ liệu hàng loạt
+          </p>
+          <p class="text-[12px] leading-[20px] text-[#718096] font-chu2">
+            Nhập hàng loạt dữ liệu với mẫu tự động bên dưới
+          </p>
+        </div>
+        <button
+          (click)="closeExcels()"
+          type="button"
+          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+        >
+          <svg
+            class="w-3 h-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 14 14"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+            />
+          </svg>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="flex items-center justify-center p-[8px]">
+        <img src="../../../assets/excel.png" class="w-full" />
+      </div>
+      <div class="px-4">
+        <h1 class="text-[16px] leading-[24px] font-chu2 font-bold">
+          Hướng dẫn nhanh:
+        </h1>
+        <div class="my-[12px]">
+          <p class="text-[14px] leading-[20px]">
+            <b class="text-[14px] leading-[20px] font-chu2">Bước 1:</b> Tải
+            Xuống Mẫu:
+          </p>
+        </div>
+        <button
+          class="w-full h-[40px] border-[1px] rounded-[4px] flex justify-center items-center border-blue-500"
+          (click)="cautrucExcel(); onDowload()"
+        >
+          <img src="../../../../assets/iconExcel.png" />
+          <p
+            class="text-[14px] font-500 font-chu2 leading-[20px] ml-[7px] text-[#005DE4]"
+          >
+            Tải Mẫu Excel
+          </p>
+        </button>
+        <div
+          class="w-full h-[1px] bg-gray-200 border-dashed border-t my-[12px]"
+        ></div>
+        <p class="text-[14px]">
+          <b class="text-[14px] font-chu2">Bước 2:</b> Điền Dữ Liệu: Mở và điền
+          thông tin vào mẫu.
+        </p>
+        <p class="text-[14px]">
+          <b class="text-[14px] font-chu2">Bước 3:</b> Lưu và Chuyển Đổi: Lưu
+          lại file excel.
+        </p>
+        <p class="text-[14px]">
+          <b class="text-[14px] font-chu2">Bước 4:</b> Tải Lên: Đăng tải file để
+          nhập dữ liệu.
+        </p>
+        <button
+          class="flex items-center justify-center w-full buttonn"
+          [disabled]="!checkDowload"
+        >
+          <label
+            [style.pointer-events]="!checkDowload ? 'none' : 'auto'"
+            for="dropzone-file"
+            class="flex flex-col items-center justify-center w-full h-[115px] mt-[12px] mb-[8px] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+          >
+            <div class="flex items-center justify-center pt-5 pb-6">
+              <img src="../../../../assets/iconExcel.png" class="icon" />
+              <p class="text-[14px] ml-[7px] font-chu2">
+                {{
+                  selectedFileName
+                    ? "File Đã Chọn: " + selectedFileName
+                    : "Tải file dữ liệu"
+                }}
+              </p>
+              <input
+                id="dropzone-file"
+                type="file"
+                class="hidden"
+                (change)="onFileSelected($event)"
+              />
+            </div>
+          </label>
+        </button>
+      </div>
+      <!-- Modal footer -->
+      <div
+        class="flex items-center w-full p-4 pt-[8px] border-t border-gray-200 rounded-b dark:border-gray-600"
+      >
+        <button
+          [disabled]="!checkimport"
+          (click)="onContinue()"
+          type="button"
+          class="text-white w-full bg-[#00BE67] cursor-pointer hover:bg-blue-800 font-chu3 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-[4px] text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          <label class="cursor-pointer font-chu2">
+            {{ checkimport ? "Tiếp tục" : "Hãy import file vào" }}</label
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup delete b1-->
+<div
+  *ngIf="ondelete2"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="py-[24px] px-[24px] w-[400px] h-[260px] bg-white rounded-xl">
+    <div class="flex justify-between items-center mb-[16px]">
+      <div>
+        <img src="../../../../assets/trash.png" class="w-[60px] h-[60px]" />
+      </div>
+      <button (click)="closeDelete1()">
+        <img
+          src="../../../../assets/x-close.png"
+          class="w-[24px] h-[24px] cursor-pointer transform hover:scale-110 transition-transform"
+        />
+      </button>
+    </div>
+    <div class="mb-[32px]">
+      <h1 class="font-chu2 text-[18px] font-semibold">
+        Bạn đang huỷ tạo dữ liệu
+      </h1>
+      <p
+        class="font-chu2 text-[14px] leading-[20px] font-normal text-[#475467]"
+      >
+        Bằng việc nhấn nút “Huỷ”, hệ thống sẽ xoá dữ liệu ở bước 1 bạn mới tạo
+        và không thể khôi phục lại dữ liệu.
+      </p>
+    </div>
+    <div class="flex gap-[12px]">
+      <div class="w-[50%]">
+        <button
+          (click)="closeDelete1()"
+          class="flex w-full py-[10px] px-[18px] justify-center items-center rounded-lg border-[1px] border-[#D0D5DD] cursor-pointer hover:bg-slate-400 hover:text-[#ffff]"
+        >
+          <label
+            class="font-chu2 text-btn font-normal leading-[24px] cursor-pointer"
+            >Huỷ</label
+          >
+        </button>
+      </div>
+      <div class="w-[50%]">
+        <button
+          (click)="deleteHDNK()"
+          class="flex w-full py-[10px] px-[18px] button-addkhoa justify-center items-center rounded-lg border-[1px] border-[#D92D20] bg-[#D92D20] text-[#ffff] hover:bg-red-500 cursor-pointer"
+        >
+          <label
+            class="font-chu2 text-btn font-semibold leading-[24px] cursor-pointer"
+            >Xoá Dữ Liệu</label
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup delete b1 b2-->
+<div
+  *ngIf="ondelete3"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="py-[24px] px-[24px] w-[400px] h-[260px] bg-white rounded-xl">
+    <div class="flex justify-between items-center mb-[16px]">
+      <div>
+        <img src="../../../../assets/trash.png" class="w-[60px] h-[60px]" />
+      </div>
+      <button (click)="closeDelete2()">
+        <img
+          src="../../../../assets/x-close.png"
+          class="w-[24px] h-[24px] cursor-pointer transform hover:scale-110 transition-transform"
+        />
+      </button>
+    </div>
+    <div class="mb-[32px]">
+      <h1 class="font-chu2 text-[18px] font-semibold">
+        Bạn đang huỷ tạo dữ liệu
+      </h1>
+      <p
+        class="font-chu2 text-[14px] leading-[20px] font-normal text-[#475467]"
+      >
+        Bằng việc nhấn nút “Huỷ”, hệ thống sẽ xoá dữ liệu ở bước 1, 2 bạn mới
+        tạo và không thể khôi phục lại dữ liệu.
+      </p>
+    </div>
+    <div class="flex gap-[12px]">
+      <div class="w-[50%]">
+        <button
+          (click)="closeDelete2()"
+          class="flex w-full py-[10px] px-[18px] justify-center items-center rounded-lg border-[1px] border-[#D0D5DD] cursor-pointer hover:bg-slate-400 hover:text-[#ffff]"
+        >
+          <label
+            class="font-chu2 text-btn font-normal leading-[24px] cursor-pointer"
+            >Huỷ</label
+          >
+        </button>
+      </div>
+      <div class="w-[50%]">
+        <button
+          (click)="deleteHDNK()"
+          class="flex w-full py-[10px] px-[18px] button-addkhoa justify-center items-center rounded-lg border-[1px] border-[#D92D20] bg-[#D92D20] text-[#ffff] hover:bg-red-500 cursor-pointer"
+        >
+          <label
+            class="font-chu2 text-btn font-semibold leading-[24px] cursor-pointer"
+            >Xoá Dữ Liệu</label
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup delete b1 b2-->
+<div
+  *ngIf="ondelete"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="py-[24px] px-[24px] w-[400px] h-[260px] bg-white rounded-xl">
+    <div class="flex justify-between items-center mb-[16px]">
+      <div>
+        <img src="../../../../assets/trash.png" class="w-[60px] h-[60px]" />
+      </div>
+      <button (click)="closeDelete()">
+        <img
+          src="../../../../assets/x-close.png"
+          class="w-[24px] h-[24px] cursor-pointer transform hover:scale-110 transition-transform"
+        />
+      </button>
+    </div>
+    <div class="mb-[32px]">
+      <h1 class="font-chu2 text-[18px] font-semibold">Bạn đang xoá dữ liệu</h1>
+      <p
+        class="font-chu2 text-[14px] leading-[20px] font-normal text-[#475467]"
+      >
+        Bằng việc nhấn nút “Xoá”, hệ thống sẽ xoá dữ liệu theo bạn yêu cầu và
+        không thể khôi phục lại dữ liệu.
+      </p>
+    </div>
+    <div class="flex gap-[12px]">
+      <div class="w-[50%]">
+        <button
+          (click)="closeDelete()"
+          class="flex w-full py-[10px] px-[18px] justify-center items-center rounded-lg border-[1px] border-[#D0D5DD] cursor-pointer hover:bg-slate-400 hover:text-[#ffff]"
+        >
+          <label
+            class="font-chu2 text-btn font-normal leading-[24px] cursor-pointer"
+            >Huỷ</label
+          >
+        </button>
+      </div>
+      <div class="w-[50%]">
+        <button
+          (click)="deleteHD()"
+          class="flex w-full py-[10px] px-[18px] button-addkhoa justify-center items-center rounded-lg border-[1px] border-[#D92D20] bg-[#D92D20] text-[#ffff] hover:bg-red-500 cursor-pointer"
+        >
+          <label
+            class="font-chu2 text-btn font-semibold leading-[24px] cursor-pointer"
+            >Xoá Dữ Liệu</label
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup delete all-->
+<div
+  *ngIf="onalldelete"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50 flex items-center justify-center"
+>
+  <div class="py-[24px] px-[24px] w-[400px] h-[260px] bg-white rounded-xl">
+    <div class="flex justify-between items-center mb-[16px]">
+      <div>
+        <img src="../../../../assets/trash.png" class="w-[60px] h-[60px]" />
+      </div>
+      <button (click)="closeDeleteAll()">
+        <img
+          src="../../../../assets/x-close.png"
+          class="w-[24px] h-[24px] cursor-pointer transform hover:scale-110 transition-transform"
+        />
+      </button>
+    </div>
+    <div class="mb-[32px]">
+      <h1 class="font-chu2 text-[18px] font-semibold">
+        Bạn đang chọn xoá {{ selectedRowCount }} dữ liệu
+      </h1>
+      <p
+        class="font-chu2 text-[14px] leading-[20px] font-normal text-[#475467]"
+      >
+        Bằng việc nhấn nút “Xoá”, hệ thống sẽ xoá dữ liệu theo bạn yêu cầu và
+        không thể khôi phục lại dữ liệu.
+      </p>
+    </div>
+    <div class="flex gap-[12px]">
+      <div class="w-[50%]">
+        <button
+          (click)="closeDeleteAll()"
+          class="flex w-full py-[10px] px-[18px] justify-center items-center rounded-lg border-[1px] border-[#D0D5DD] cursor-pointer hover:bg-slate-400 hover:text-[#ffff]"
+        >
+          <label
+            class="font-chu2 text-btn font-normal leading-[24px] cursor-pointer"
+            >Huỷ</label
+          >
+        </button>
+      </div>
+      <div class="w-[50%]">
+        <button
+          (click)="deleteLopAll()"
+          class="flex w-full py-[10px] px-[18px] button-addkhoa justify-center items-center rounded-lg border-[1px] border-[#D92D20] bg-[#D92D20] text-[#ffff] hover:bg-red-500 cursor-pointer"
+        >
+          <label
+            class="font-chu2 text-btn font-normal leading-[24px] cursor-pointer"
+            >Xoá Tất Cả</label
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

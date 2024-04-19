@@ -1,0 +1,22 @@
+.h-table {
+    max-height: calc(100% - 38px - 50px);
+  }
+  
+  .max-h-table {
+    max-height: 300px;
+  }
+  
+  .bg-linearGradient {
+    background: linear-gradient(180deg, #29B475 0%, #1AAB69 100%)
+  }
+  
+  @media (max-width: 1000px) {
+    .fit-w-table {
+      max-width: fit-content;
+    }
+  
+    table {
+      min-width: max-content;
+    }
+    
+  }

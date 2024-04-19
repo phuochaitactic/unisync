@@ -1,0 +1,246 @@
+<div class="bg-white rounded-[16px] m-[16px] height-table">
+  <div class="flex justify-between items-center px-5 py-[16px]">
+    <div class="flex flex-col items-start">
+      <h1
+        class="text-black font-bold leading-[28px] text-fieldskhoa font-chu2 text-[22px]"
+      >
+        {{ title }}
+      </h1>
+      <span
+        class="font-medium text-[14px] leading-[22px] text-[#687588] font-chu2 mt-[8px]"
+        >Quản lý dữ liệu văn bản trên hệ thống</span
+      >
+    </div>
+  </div>
+
+  <div
+    class="flex justify-between px-[20px] py-[8px] items-center self-stretch border-khoa gap-4"
+  >
+    <div class="relative w-full">
+      <div
+        class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+      >
+        <i class="ph-bold ph-magnifying-glass text-[20px]"></i>
+      </div>
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        name="timKhoa"
+        class="block w-full h-[44px] p-2 pl-10 text-sm border-[#EBEAED] rounded-[10px] text-chung"
+        placeholder="Tìm Kiếm"
+        required
+      />
+    </div>
+
+    <div class="flex gap-4">
+      <div>
+        <button
+          (click)="toggleDropDown()"
+          [ngClass]="{
+            'active-button': activeButton === 'FT Tuần',
+            'active-dropdown': filter1
+          }"
+          class="text-black whitespace-nowrap p-2 h-[44px] hover:border-[#29B475] focus:outline-none border-[1px] rounded-[10px] text-[14px] font-medium font-chu2 px-4 py-2.5 text-center inline-flex items-center"
+          type="button"
+        >
+          <p class="max-w-[120px] truncate">{{ namek }}</p>
+
+          <i class="ph-bold ph-caret-down text-[15px] pl-[5px]"></i>
+        </button>
+
+        <!-- Dropdown menu -->
+        <div
+          *ngIf="filter1"
+          class="z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-[130px] dark:bg-gray-700 h-[200px] overflow-y-auto"
+        >
+          <ul
+            class="py-2 text-sm text-gray-700 dark:text-gray-200"
+            aria-labelledby="filterKhoa"
+          >
+            <li>
+              <a
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+                (click)="resetFilter()"
+              >
+                Tất Cả Khoa
+              </a>
+            </li>
+            <li
+              *ngFor="let khoa of quanLyCosoData | uniqueFilter : 'tenVanBan'"
+              value="tenVanBan"
+            >
+              <a
+                (click)="filterKhoa(khoa.tenVanBan)"
+                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
+              >
+                {{ khoa.tenVanBan }}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-col overflow-y-auto h-[67.7vh] m-[16px] rounded-[16px]">
+    <table class="w-full font-[Manrope] text-chung">
+      <thead class="font-bold text-[#687588]">
+        <tr>
+          <th class="w-[40px] pl-[16px]">
+            <input
+              (change)="checkAllRows()"
+              [checked]="checkAll"
+              type="checkbox"
+              class="h-[16px] w-[16px] rounded-md border-[1px] border-solid border-[#CBD5E1]"
+            />
+          </th>
+          <th class="text-center w-[60px]">STT</th>
+          <th class="ten w-[168px]">
+            <button class="flex items-center gap-4">
+              Mã Văn Bản
+              <div class="pt-1">
+                <i *ngIf="this.isIcon" class="ph-bold ph-arrow-fat-up"></i>
+                <i *ngIf="!this.isIcon" class="ph-bold ph-arrow-fat-down"></i>
+              </div>
+            </button>
+          </th>
+          <th class="ten w-[618px]">
+            <button class="flex items-center gap-4">
+              Tên Văn Bản
+              <div class="pt-1">
+                <i *ngIf="this.isIcons" class="ph-bold ph-arrow-fat-up"></i>
+                <i *ngIf="!this.isIcons" class="ph-bold ph-arrow-fat-down"></i>
+              </div>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody class="text-center font-normal" *ngIf="!loading">
+        <tr
+          *ngFor="
+            let khoa of quanLyCosoData
+              | filter : 'tenVanBan' : tenkhoa
+              | search : searchText
+              | paginate : { itemsPerPage: 15, currentPage: p };
+            let i = index
+          "
+        >
+          <td class="pl-[16px]">
+            <input
+              (change)="selectOne($event, i)"
+              [checked]="selectedItems[i]"
+              type="checkbox"
+              class="h-[16px] w-[16px] rounded-md border-[1px] border-solid border-[#CBD5E1]"
+            />
+          </td>
+          <td class="text-center">{{ stt + i }}</td>
+          <td
+            class="ten max-w-[600px] hover:text-red-500 hover:underline cursor-pointer"
+          >
+            {{ khoa.maVanBan }}
+          </td>
+          <td class="ten">
+            <div class="flex">
+              <img src="../../../../assets/File.png" />
+              <a
+                (click)="showPDF(khoa.link)"
+                class="cursor-pointer pl-2 hover:text-[#29B475] text-[14px] max-w-[600px] hover:underline"
+                >{{ khoa.tenVanBan }}.pdf</a
+              >
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ngx-skeleton-loader
+      *ngIf="loading"
+      count="98"
+      [theme]="{
+        width: '130px',
+        height: '30px',
+        left: '20px',
+        margin: '10px',
+        'border-radius': '10px',
+        background: '#F5F5F5'
+      }"
+      appearance="line"
+    ></ngx-skeleton-loader>
+    <div
+      class="flex flex-col items-center font-chu2 pt-[32px]"
+      *ngIf="
+        !loading &&
+        (quanLyCosoData | filter : 'tenVanBan' : tenkhoa | search : searchText)
+          .length === 0
+      "
+    >
+      <img src="../../../../assets/empty1.png" class="w-[87px] h-[87px]" />
+
+      <h1 class="text-[#718096] text-[18px] font-bold pt-[16px]">
+        Dữ liệu trống
+      </h1>
+      <p class="text-[14px] font-normal text-[#A0AEC0]">
+        Vui lòng nhập dữ liệu lên hệ thống
+      </p>
+    </div>
+
+    <div class="flex justify-between py-4">
+      <div>
+        <button
+          (click)="onDeleteAll()"
+          *ngIf="showDeleteAllButton"
+          class="flex p-3 text-btn h-[35px] font-chu2 justify-center items-center gap-[8px] button-addkhoa bg-red-600 hover:bg-red-400 text-white transition-all cursor-pointer"
+        >
+          Xoá Tất Cả
+        </button>
+      </div>
+
+      <div
+        class="flex justify-end items-center font-chu2"
+        *ngIf="
+          (
+            quanLyCosoData
+            | filter : 'tenVanBan' : tenkhoa
+            | search : searchText
+          ).length > 15
+        "
+      >
+        <h1 class="text-[12px] text-fields pb-4">
+          Showing 1 to 15 of
+          {{ quanLyCosoData ? quanLyCosoData.length : 0 }} entries
+        </h1>
+        <pagination-controls
+          class="text-[12px]"
+          (pageChange)="p = $event"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showPdf"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full bg-gray-800 bg-opacity-50"
+>
+  <div class="w-[640px] bg-white shadow-2xl p-[20px] justify-center pdf-modal">
+    <div class="flex justify-end">
+      <button (click)="closePDF()">
+        <i
+          class="ph-bold ph-x transform hover:scale-110 transition-transform"
+        ></i>
+      </button>
+    </div>
+    <div class="pt-2">
+      <ngx-extended-pdf-viewer
+        *ngIf="selectedVanBan"
+        [base64Src]="selectedVanBan.link"
+        [height]="'85vh'"
+        [contextMenuAllowed]="true"
+        [showOpenFileButton]="false"
+        [showPropertiesButton]="false"
+        [showHandToolButton]="true"
+        [useBrowserLocale]="true"
+        (pagesLoaded)="(1)"
+      ></ngx-extended-pdf-viewer>
+    </div>
+  </div>
+  <button>Close PDF</button>
+</div>

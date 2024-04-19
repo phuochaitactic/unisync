@@ -1,0 +1,478 @@
+<div class="flex w-full h-screen fixed">
+  <div
+    class="w-[320px] h-[100vh] border-r border-[#EBEAED] px-[32px] py-[24px] overflow-y-auto scrollBar"
+  >
+    <div class="flex justify-between items-center">
+      <div>
+        <img
+          src="../../../../assets/TruongKhoa.png"
+          class="w-[10vw] object-cover"
+        />
+      </div>
+      <button
+        class="flex gap-[-5px] items-start cursor-pointer transform hover:scale-110 transition-transform"
+      >
+        <i class="ph-bold ph-caret-left"></i>
+        <i class="ph-bold ph-caret-left"></i>
+      </button>
+    </div>
+    <div
+      class="bg-[#29B475] flex justify-between items-center px-[16px] py-[10px] rounded-[10px] mt-[16px]"
+    >
+      <span
+        class="text-white font-Manrope text-[14px] font-bold max-w-[150px] truncate"
+        >Trang cho {{ user }}</span
+      >
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M2.16683 1.95825C2.05177 1.95825 1.9585 2.05153 1.9585 2.16659V5.49992C1.9585 5.61498 2.05177 5.70825 2.16683 5.70825H5.50016C5.61522 5.70825 5.7085 5.61498 5.7085 5.49992V2.16659C5.7085 2.05153 5.61522 1.95825 5.50016 1.95825H2.16683ZM0.708496 2.16659C0.708496 1.36117 1.36141 0.708252 2.16683 0.708252H5.50016C6.30558 0.708252 6.9585 1.36117 6.9585 2.16659V5.49992C6.9585 6.30533 6.30558 6.95825 5.50016 6.95825H2.16683C1.36141 6.95825 0.708496 6.30533 0.708496 5.49992V2.16659Z"
+          fill="white"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M10.5002 1.95825C10.3851 1.95825 10.2918 2.05153 10.2918 2.16659V5.49992C10.2918 5.61498 10.3851 5.70825 10.5002 5.70825H13.8335C13.9486 5.70825 14.0418 5.61498 14.0418 5.49992V2.16659C14.0418 2.05153 13.9486 1.95825 13.8335 1.95825H10.5002ZM9.04183 2.16659C9.04183 1.36117 9.69475 0.708252 10.5002 0.708252H13.8335C14.6389 0.708252 15.2918 1.36117 15.2918 2.16659V5.49992C15.2918 6.30533 14.6389 6.95825 13.8335 6.95825H10.5002C9.69475 6.95825 9.04183 6.30533 9.04183 5.49992V2.16659Z"
+          fill="white"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M2.16683 10.2916C2.05177 10.2916 1.9585 10.3849 1.9585 10.4999V13.8333C1.9585 13.9483 2.05177 14.0416 2.16683 14.0416H5.50016C5.61522 14.0416 5.7085 13.9483 5.7085 13.8333V10.4999C5.7085 10.3849 5.61522 10.2916 5.50016 10.2916H2.16683ZM0.708496 10.4999C0.708496 9.6945 1.36141 9.04158 2.16683 9.04158H5.50016C6.30558 9.04158 6.9585 9.6945 6.9585 10.4999V13.8333C6.9585 14.6387 6.30558 15.2916 5.50016 15.2916H2.16683C1.36141 15.2916 0.708496 14.6387 0.708496 13.8333V10.4999Z"
+          fill="white"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M10.5002 10.2916C10.3851 10.2916 10.2918 10.3849 10.2918 10.4999V13.8333C10.2918 13.9483 10.3851 14.0416 10.5002 14.0416H13.8335C13.9486 14.0416 14.0418 13.9483 14.0418 13.8333V10.4999C14.0418 10.3849 13.9486 10.2916 13.8335 10.2916H10.5002ZM9.04183 10.4999C9.04183 9.6945 9.69475 9.04158 10.5002 9.04158H13.8335C14.6389 9.04158 15.2918 9.6945 15.2918 10.4999V13.8333C15.2918 14.6387 14.6389 15.2916 13.8335 15.2916H10.5002C9.69475 15.2916 9.04183 14.6387 9.04183 13.8333V10.4999Z"
+          fill="white"
+        />
+      </svg>
+    </div>
+    <div>
+      <p
+        class="text-[12px] font-bold leading-[20px] text-[#718096] my-[10px] mt-[26px]"
+      >
+        TỔNG QUAN
+      </p>
+      <button
+        class="button"
+        [ngClass]="{
+          'active-button': activeButton === 'Bậc hệ ngành'
+        }"
+        (click)="buttonBHNganh()"
+      >
+        <img
+          src="../../../../assets/GraduationCap.png"
+          class="px-[12px] py-[14px]"
+          [ngStyle]="{
+            filter: activeButton === 'Bậc hệ ngành' ? 'brightness(100)' : ''
+          }"
+        />
+        <span class="font-Manrope text-[14px] pr-[12px] py-[12px]">
+          Bậc hệ ngành
+        </span>
+      </button>
+      <button
+        class="button"
+        [ngClass]="{
+          'active-button': activeButton === 'Sinh viên theo CTDT'
+        }"
+        (click)="buttonSVCTDT()"
+      >
+        <img
+          src="../../../../assets/student.png"
+          class="px-[12px] py-[14px]"
+          [ngStyle]="{
+            filter:
+              activeButton === 'Sinh viên theo CTDT' ? 'brightness(100)' : ''
+          }"
+        />
+        <span class="font-Manrope text-[14px] pr-[12px] py-[12px]">
+          Sinh viên theo CTDT
+        </span>
+      </button>
+      <button
+        class="button"
+        [ngClass]="{
+          'active-button': activeButton === 'Danh sách VB-QD'
+        }"
+        (click)="buttonDSVBQD()"
+      >
+        <img
+          src="../../../../assets/doc.png"
+          class="px-[12px] py-[14px]"
+          [ngStyle]="{
+            filter: activeButton === 'Danh sách VB-QD' ? 'brightness(100)' : ''
+          }"
+        />
+        <span class="font-Manrope text-[14px] pr-[12px] py-[12px]">
+          Danh sách VB-QĐ
+        </span>
+      </button>
+    </div>
+    <div class="mt-[12px]">
+      <p class="text-[12px] font-bold leading-[20px] text-[#718096] my-[10px]">
+        CHỨC NĂNG
+      </p>
+      <!-- <div
+        id="systemContent"
+        class="h-[44px] w-full rounded-[8px] flex items-center justify-between"
+        (click)="toggleButtons('systemContent')"
+        [ngClass]="{
+          'active-button':
+            activeButton === 'Danh sách tuần học kì' ||
+            activeButton === 'Lập kế hoạch dự kiến'
+        }"
+      >
+        <div class="flex">
+          <i
+            class="ph ph-briefcase px-[12px] py-[14px]"
+            [ngStyle]="{
+              text:
+                activeButton === 'Danh sách tuần học kì' ||
+                activeButton === 'Lập kế hoạch dự kiến'
+                  ? 'white'
+                  : ''
+            }"
+          ></i>
+          <span class="font-bold font-Manrope text-[14px] pr-[12px] py-[12px]">
+            Kế hoạch dự kiến
+          </span>
+        </div>
+        <i
+          class="ph flex items-center pr-2"
+          [ngClass]="{
+            'ph-caret-right': !showDropdown,
+            'ph-caret-down': showDropdown
+          }"
+        ></i>
+      </div>
+      <div *ngIf="showDropdown" class="dropdown-container">
+        <div class="relative">
+          <div class="bbc h-[50px]"></div>
+          <div>
+            <div class="flex">
+              <div class="bb ml-[10px]"></div>
+              <button
+                class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'Danh sách tuần học kì'
+                }"
+                (click)="buttonDSTHK()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  DS Tuần Học kỳ
+                </span>
+              </button>
+            </div>
+            <div class="flex">
+              <div class="bb ml-[10px]"></div>
+              <button
+                class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'Lập kế hoạch dự kiến'
+                }"
+                (click)="buttonLKHDK()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  Lập kế hoạch dự kiến
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <div
+        id="activityContent"
+        class="h-[44px] w-full rounded-[8px] flex items-center justify-between button"
+        (click)="toggleButtons('activityContent')"
+        [ngClass]="{
+          'active-button':
+            activeButton === 'Danh sách HDNK' ||
+            activeButton === 'Lập kế hoạch HD' ||
+            activeButton === 'Tạo lịch Duyệt'
+        }"
+      >
+        <div class="flex">
+          <i
+            class="ph ph-person-simple-run px-[12px] py-[14px]"
+            [ngStyle]="{
+              text:
+                activeButton === 'Danh sách HDNK' ||
+                activeButton === 'Lập kế hoạch HD' ||
+                activeButton === 'Tạo lịch Duyệt'
+                  ? 'white'
+                  : ''
+            }"
+          ></i>
+          <span class="font-bold font-Manrope text-[14px] pr-[12px] py-[12px]">
+            Quản lý Hoạt động
+          </span>
+        </div>
+        <i
+          class="ph flex items-center pr-2"
+          [ngClass]="{
+            'ph-caret-right': !showDropdown2,
+            'ph-caret-down': showDropdown2
+          }"
+        ></i>
+      </div>
+      <div *ngIf="showDropdown2" class="dropdown-container">
+        <div class="relative">
+          <div class="bbc h-[100px]"></div>
+          <div>
+            <div class="flex">
+              <div class="bb ml-[10px]"></div>
+              <button
+                class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'Danh sách HDNK'
+                }"
+                (click)="buttonDSHDNK()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  <p class="max-w-[150px] truncate">Danh sách hoạt động</p>
+                </span>
+              </button>
+            </div>
+            <div class="flex">
+              <div class="bb ml-[10px]"></div>
+              <button
+                class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'Lập kế hoạch HD'
+                }"
+                (click)="buttonLKHHD()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  <p class="max-w-[150px] truncate">
+                    Lịch đăng ký hoạt động ngoại khoá
+                  </p>
+                </span>
+              </button>
+            </div>
+            <div class="flex">
+              <div class="bb ml-[10px]"></div>
+              <button
+                class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'Tạo lịch Duyệt'
+                }"
+                (click)="buttonXLHDNK()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  <p class="max-w-[150px] truncate">
+                    Lịch duyệt hoạt động ngoại khoá
+                  </p>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <div
+        id="otherContent"
+        class="h-[44px] w-full rounded-[8px] flex items-center justify-between button"
+        (click)="toggleButtons('otherContent')"
+        [ngClass]="{
+          'active-button':
+            activeButton === 'Tạo lịch DKHD' || activeButton === 'Quản lý QD'
+        }"
+      >
+        <div class="flex">
+          <i
+            class="ph ph-user-gear px-[12px] py-[14px]"
+            [ngStyle]="{
+              text:
+                activeButton === 'Tạo lịch DKHD' ||
+                activeButton === 'Quản lý QD'
+                  ? 'white'
+                  : ''
+            }"
+          ></i>
+          <span class="font-bold font-Manrope text-[14px] pr-[12px] py-[12px]">
+            Khác
+          </span>
+        </div>
+        <i
+          class="ph flex items-center pr-2"
+          [ngClass]="{
+            'ph-caret-right': !showDropdown3,
+            'ph-caret-down': showDropdown3
+          }"
+        ></i>
+      </div>
+      <div *ngIf="showDropdown3" class="dropdown-container">
+        <div class="relative">
+          <div class="bbc h-[50px]"></div>
+          <div>
+            <div class="flex">
+              <div class="bb ml-[10px]"></div>
+              <button
+                class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'Quản lý QD'
+                }"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  Quản lý quy định
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div class="w-full h-screen bg-[#FAFAFA] font-Manrope">
+    <div class="h-[72px] w-full border-b-[1px] border-[#E2E8F0]">
+      <div class="absolute top-[18px] right-0 flex items-center">
+        <div class="">
+          <h1
+            class="px-[15px] py-[8px] new text-[14px] font-[Manrope] font-bold text-[#57606A]"
+          >
+            Vai trò: Trưởng Khoa
+          </h1>
+        </div>
+        <div class="w-[0.7px] h-[20px] new mx-[10px]"></div>
+        <button
+          class="flex justify-center items-center px-[18px] py-[8px] new"
+          (click)="selectSemester()"
+        >
+          <i class="ph ph-eye text-[15px]"></i>
+          <p
+            class="font-bold text-[14px] leading-[20px] px-[8px] text-[#57606A]"
+          >
+            Bạn đang xem: {{ selectedOptionNH2 }}
+          </p>
+          <i class="ph ph-caret-down text-[15px]"></i>
+        </button>
+        <div class="flex justify-center items-center" (click)="togglelogout()">
+          <img
+            src="../../../../assets/Users.png"
+            class="ml-[10px] w-[32px] h-[32px]"
+          />
+          <div>
+            <img
+              src="../../../../assets/arrow_drop_down.png"
+              class="mr-[30px] cursor-pointer"
+            />
+          </div>
+          <div
+            *ngIf="toggleLogout"
+            class="z-10 bg-emerald-400 absolute font-bold mt-[100px] mr-[40px] divide-y hover:text-white divide-gray-100 rounded-lg shadow w-[130px] dark:bg-gray-700 dark:divide-gray-600"
+          >
+            <div
+              class="py-2 pl-[15px] flex gap-[2px] items-center cursor-pointer"
+              (click)="logout()"
+            >
+              <i class="ph-bold ph-sign-out"></i>
+              <a class="block px-2 py-1 text-xs">Đăng xuất</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-[#F9FAFA] w-full">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay font-Manrope" *ngIf="!semester">
+  <div class="modal-content">
+    <div class="w-[480px]">
+      <div class="flex justify-between px-[16px] py-[12px] bg-[#f6f8fa]">
+        <h1 class="text-[18px] font-semibold">Chọn Năm Học</h1>
+        <button (click)="selectSemester()">
+          <i class="ph ph-x text-[20px]"></i>
+        </button>
+      </div>
+      <div class="w-full h-[1px] bg-gray-300"></div>
+      <div class="mt-[16px] mb-[20px] px-[16px]">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-[14px] mb-[8px]" for="namhoc">Năm Học</p>
+            <select
+              id="namhoc"
+              class="new"
+              (change)="onYearChange($event)"
+              [(ngModel)]="selectedYear"
+            >
+              <option value="" disabled selected>Chọn năm học</option>
+              <option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="selectedYear">
+            <p class="text-[14px] mb-[8px]" for="hocky">Học kỳ</p>
+            <select
+              id="hocky"
+              class="new"
+              (change)="onSemesterChange($event)"
+              [(ngModel)]="selectedSemester"
+            >
+              <option value="" disabled selected>Chọn học kỳ</option>
+              <option
+                *ngFor="let nhhk of filteredNhhkData"
+                [value]="nhhk.tenNhhk"
+              >
+                {{ nhhk.tenNhhk }}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="!selectedYear">
+            <p class="text-[14px] mb-[8px]" for="hocky">Học kỳ</p>
+            <select id="hocky" class="new">
+              <option disabled selected>Hãy chọn năm học trước</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mt-[16px] mb-[20px] px-[16px]"></div>
+        <button
+          class="flex justify-between h-[44px] w-full items-center px-[18px] py-[8px] new cursor-not-allowed"
+        >
+          <div class="flex justify-center">
+            <i class="ph-bold ph-calendar text-[20px]"></i>
+            <p class="text-[16px] leading-[20px] px-[8px]">
+              Bạn đang xem: {{ selectedOptionNH }}
+            </p>
+          </div>
+        </button>
+        <div class="w-full h-[1px] bg-gray-300 my-[16px]"></div>
+        <div class="px-[15px] mt-[12px]">
+          <button
+            (click)="buttonNext()"
+            class="h-[40px] w-full bg-[#29B475] flex justify-center items-center rounded-[8px]"
+          >
+            <p class="text-white text-[14px]">Tiếp tục</p>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

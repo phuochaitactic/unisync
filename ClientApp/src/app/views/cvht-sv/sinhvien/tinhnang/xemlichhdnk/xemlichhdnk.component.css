@@ -1,0 +1,71 @@
+.calendar {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    height: 600px;
+    overflow: auto;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #eee;
+  }
+  
+  .hours {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .hour {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .days {
+    width: 100%;
+    display: flex;
+  }
+  
+  .day {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+  }
+  
+  .event-column {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .event-cell {
+    border: 1px solid #ddd;
+    overflow: hidden;
+  }
+  
+  .event {
+    padding: 5px;
+    margin: 2px;
+    background-color: #a2a2a2;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .headerSticky {
+    position: sticky;
+    top: 0; /* Giữ phần thead ở trên cùng của phần tử cha */
+    background-color: #fafafa;
+    z-index: 1; /* Đảm bảo phần thead nằm trên cùng */
+}
+
+.square {
+    height: 60px;
+    width: 60px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}

@@ -1,0 +1,245 @@
+<div class="w-full h-screen bg-[#f0f0f1] flex flex-col">
+  <div
+    class="w-full h-[80px] bg-[#fff] border-b-[#e4e4e4] flex px-[40px] justify-between"
+  >
+    <div class="justify-center items-center flex py-[16px]">
+      <img src="../../../assets/unisync.jpg" class="h-[28px]" />
+      <div class="hamburger-menu">
+        <!-- <div class="dropdown">
+                    <button class="h-[40px] justify-center items-center flex ml-[32px] dropbtn">
+                        <p class="font-Inter font-bold text-[14px]">
+                            Quản lý Hoạt động ngoại khoá
+                        </p>
+                        <i class="ph ph-caret-down pl-[8px]"></i>
+                    </button>
+                    <div class="dropdown-content left-[30px] w-[250px]">
+                        <button
+                            class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px] hover:bg-[#EEEEEE]"
+                            [ngClass]="{
+                                'active-subButton': activeButton === 'DKHDNK'
+                            }"
+                            (click)="buttonDKHDNK()"
+                        >
+                            <span class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]">
+                                Đăng ký hoạt động ngoại khóa
+                            </span>
+                        </button>
+                        
+                        <button
+                            class="h-[44px] w-full rounded-[8px] flex items-center pl-[12px] mt-[4px] hover:bg-[#EEEEEE]"
+                            [ngClass]="{
+                                'active-subButton': activeButton === 'KQDKHDNK'
+                                }"
+                            (click)="buttonKQDKHDNK()"
+                        >
+                            <span class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]">
+                                Xem kết quả đăng ký hoạt động
+                                </span>
+                        </button>
+                    </div>
+                </div> -->
+        <button (click)="buttonDHDNK()" class="ml-4 h-[40px]">
+          <p
+            class="text-[#718096] font-Inter font-semibold text-[14px] leading-[20px] hover:text-black"
+          >
+            Duyệt hoạt động ngoại khóa
+          </p>
+        </button>
+        <button (click)="buttonLSD()" class="ml-4 h-[40px]">
+          <p
+            class="text-[#718096] font-Inter font-semibold text-[14px] leading-[20px] hover:text-black"
+          >
+            Lịch sử các kỳ đã duyệt
+          </p>
+        </button>
+      </div>
+    </div>
+    <div class="flex items-center">
+      <!-- <button class="regActivity-btn h-[40px] px-[18px] py-[10px] rounded-[8px]">
+                <p class="font-Inter font-semibold text-[14px] leading-[20px] text-[#fff]">
+                    Đăng ký Hoạt động
+                </p>
+            </button> -->
+      <div class="dropdown ml-4">
+        <div class="flex items-center dropbtn">
+          <img
+            src="../../../assets/ava-student.jpg"
+            class="h-[33px] w-[33px]"
+          />
+          <i class="ph ph-caret-down pl-[4px] text-[14px]"></i>
+        </div>
+        <div class="dropdown-content right-[0px] w-[300px]">
+          <div class="p-[8px]">
+            <div>
+              <div class="px-[12px] font-Inter">
+                <button class="flex items-center py-[10px]">
+                  <img src="../../../assets/information-circle.png" />
+                  <p
+                    class="ml-[10px] text-[#383F45] text-[16px] font-medium leading-[24px]"
+                  >
+                    Thắc mắc thường gặp
+                  </p>
+                </button>
+                <button class="flex items-center py-[10px]">
+                  <img src="../../../assets/phone-arrow-up-right.png" />
+                  <p
+                    class="ml-[10px] text-[#383F45] text-[16px] font-medium leading-[24px]"
+                  >
+                    Liên hệ hỗ trợ
+                  </p>
+                </button>
+              </div>
+            </div>
+            <button
+              (click)="logOut()"
+              class="w-full py-[10px] flex bg-[#EEEEEE] rounded-[8px] justify-center items-center mt-[4px]"
+            >
+              <span class="text-[14px] text-[383F45]">Đăng xuất</span>
+              <i class="ph ph-sign-in text-[16px] text-black pl-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <button class="bg-gray-300 text-[16px] flex justify-center items-center p-[6px]">
+            <i class="ph ph-house text-[20px]"></i>
+            <span>Trang chủ</span>
+        </button>
+        <button class="text-[16px] hover:bg-red-300 flex justify-center items-center p-[6px]">
+            <i class="ph ph-flag text-[20px]"></i>
+            <span>Quy chế quy định</span>
+        </button>
+        <button 
+            class="text-[16px] hover:bg-red-300 flex justify-center items-center p-[6px]"
+            (click)="buttonThongKe()"
+            [ngClass]="{
+                'active-subButton': activeButton === 'thongke'
+                }"
+        >
+            <i class="ph ph-chart-bar text-[20px]"></i>
+            <span>Thống kê</span>
+        </button> -->
+  </div>
+  <div class="h-[52px] flex items-center px-[32px] footer-desktop">
+    <div class="flex items-center pt-[8px]">
+      <p class="ml-[8px] font-Inter font-semibold text-[14px] text-[#676E76]">
+        Trang chủ
+      </p>
+      <p class="ml-[5px] font-Inter font-semibold text-[14px] text-[#676E76]">
+        {{ feed }}
+      </p>
+    </div>
+  </div>
+  <div class="p-[12px] py-[10px] flex-1 bg-[#f0f0f1]">
+    <div class="flex-container h-full">
+      <div class="flex-[8] flex-below pl-[5px] spacing-content-mobile">
+        <div class="font-Manrope">
+          <div
+            class="h-[38px] w-full bg-linearGradient px-[16px] py-[24px] flex items-center text-white text-[16px] rounded-t-[6px]"
+          >
+            <p class="ml-[5px] font-Inter font-semibold text-[18px]">
+              {{ subFeed }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="w-full h-table border-[1px] border-[#e4e4e4] bg-white p-[4px] mb-[4px] rounded-b-[6px]"
+        >
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <div class="flex-[2] flex-above px-[5px] pl-[12px] p-ft">
+        <div class="w-full">
+          <div
+            class="h-[38px] w-full bg-linearGradient outline outline-1 outline-[#d8d9d8] px-[8px] py-[10px] flex items-center text-white text-[16px] rounded-t-[6px]"
+          >
+            <i class="ph ph-user-circle text-[20px]"></i>
+            <span class="ml-[8px] font-bold">Thông tin tài khoản</span>
+          </div>
+          <div
+            class="w-full bg-white px-[8px] border-[1px] border-[#e4e4e4] py-[8px] rounded-b-[6px] font-Manrope"
+          >
+            <div class="flex-col">
+              <span class="font-bold p-username-mobile leading-[28px]"
+                >Xin chào, {{ username }}</span
+              >
+              <br />
+              <span class="pt-[8px] p-userInfo-mobile leading-[28px]"
+                >MSGV: {{ msgv }}</span
+              >
+              <br />
+              <span class="pt-[8px] p-userInfo-mobile leading-[28px]"
+                >Khoa: {{ khoa }}</span
+              >
+              <br />
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full pt-[12px]">
+          <div
+            class="h-[38px] w-full bg-linearGradient outline outline-1 outline-[#d8d9d8] px-[8px] py-[10px] flex items-center text-white text-[16px] rounded-t-[6px]"
+          >
+            <i class="ph ph-circles-three-plus text-[20px]"></i>
+            <span class="ml-[8px] font-bold">Tính năng</span>
+          </div>
+          <div
+            class="w-full px-[8px] py-[8px] border-[1px] border-[#e4e4e4] bg-white rounded-b-[6px]"
+          >
+            <div class="w-full">
+              <button
+                class="h-[44px] btn-ft-mobile w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'DHDNK'
+                }"
+                (click)="buttonDHDNK()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  Duyệt hoạt động ngoại khóa
+                </span>
+              </button>
+
+              <button
+                class="h-[44px] btn-ft-mobile w-full rounded-[8px] flex items-center pl-[12px] mt-[4px]"
+                [ngClass]="{
+                  'active-subButton': activeButton === 'LSD'
+                }"
+                (click)="buttonLSD()"
+              >
+                <span
+                  class="font-Manrope font-medium text-[14px] pr-[12px] py-[12px]"
+                >
+                  Lịch sử các kỳ đã duyệt
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="block footer-desktop">
+          <div class="h-[200px] w-full text-center pt-[16px]">
+            <div class="text-[#5e6169] text-[12px]">
+              <span class="">Copyright © 2020 Trường Đại Học</span>
+              <br />
+              <span>Version: DEMO-2023.12C.47</span>
+              <br />
+              <span>Design by DCMM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hidden footer-mobile">
+    <div class="h-[100px] w-full text-center pt-[16px]">
+      <div class="text-[#5e6169] text-[12px]">
+        <span class="">Copyright © 2020 Trường Đại Học</span>
+        <br />
+        <span>Version: DEMO-2023.12C.47</span>
+        <br />
+        <span>Design by DCMM</span>
+      </div>
+    </div>
+  </div>
+</div>

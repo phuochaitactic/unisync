@@ -1,0 +1,161 @@
+<div class="w-full h-full flex flex-col font-Manrope">
+  <div class="w-full bg-[#f3f3f3] items-center flex">
+    <div class="font-Manrope pl-[16px]">
+      <p>Chú ý:</p>
+      <div class="flex items-center">
+        <div class="bg-[#CCFF99] w-[40px] h-[20px] mt-[6px]"></div>
+        <p>: hoat động được chấp thuận</p>
+      </div>
+      <div class="flex items-center">
+        <div class="bg-[#FFDDC9] w-[40px] h-[20px] mt-[6px]"></div>
+        <p>: hoat động được không được chấp thuận</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="flex-1">
+      <div class="max-h-table overflow-auto">
+        <div class="fit-w-table">
+          <table
+            class="font-Manrope max-h-table w-full outline-1 outline-[#e6e6e6] overflow-hidden rounded-[10px] sticky"
+          >
+            <thead class="font-bold text-[#687588] text-[12px] bg-[#fafafa]">
+              <tr>
+                <th class="w-[70px]">STT</th>
+                <th class="w-[120px]">Mã HĐ</th>
+                <th class="grow items-start justify-start flex">Hoạt động</th>
+                <th class="w-[114px]">Số điểm</th>
+                <th class="w-[114px]">Điều</th>
+              </tr>
+            </thead>
+            <tbody class="font-Manrope text-[12px] text-black">
+              <tr
+                [ngClass]="{
+                  'bg-[#CCFF99]': data.tinhTrangDuyet === true,
+                  'bg-[#FFDDC9]': data.tinhTrangDuyet === false
+                }"
+                *ngFor="let data of dataReg_Result; let i = index"
+                class="text-center border-[1px]"
+              >
+                <td>{{ stt + i }}</td>
+                <td>{{ data.iddangKy }}</td>
+                <td class="text-left">{{ data.tenhdnk }}</td>
+                <td>{{ data.soDiem }}</td>
+                <td>5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="dataReg_Result && dataReg_Result.length > 0; else noDataMessage"
+    ></div>
+  </div>
+
+  <ng-template #noDataMessage>
+    <div class="items-center p-[24px]">
+      <div class="justify-center items-center flex">
+        <img src="../../../../assets/noData.png" class="w-[100px] h-[80px]" />
+      </div>
+      <p class="text-[14px] leading-[20px] text-[#57606a] text-center">
+        Không có hoạt động nào được đăng ký !
+      </p>
+    </div>
+  </ng-template>
+
+  <ng-template #noDataButtons> </ng-template>
+</div>
+
+<div
+  *ngIf="isOpenPopup"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full font-Manrope"
+>
+  <div class="w-full h-full flex items-center justify-center">
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-50"
+    ></div>
+    <div
+      class="w-[500px] bg-white shadow-2xl p-[24px] rounded-[16px] relative z-10"
+    >
+      <div class="flex justify-between mb-[20px]">
+        <p class="font-Inter font-semibold text-[18px]">
+          Bình luận của Cố vấn học tập
+        </p>
+        <button (click)="closePopupComment()">
+          <div class="flex justify-center items-center">
+            <i class="ph ph-x text-[20px]"></i>
+          </div>
+        </button>
+      </div>
+      <div class="">
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Hoạt động sinh viên đăng ký</p>
+          <input
+            [(ngModel)]="activitySelected.tenhdnk"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full">
+          <p class="font-medium text-[14px]">
+            Xác nhận cho sinh viên tham gia :
+          </p>
+          <div class="">
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value="false"
+                [(ngModel)]="selectedOption"
+                (change)="toggleOptions(selectedOption)"
+              />
+              Không duyệt
+            </label>
+            <br />
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value="true"
+                [(ngModel)]="selectedOption"
+                (change)="toggleOptions(selectedOption)"
+              />
+              Duyệt
+            </label>
+          </div>
+          <!-- <div class="bg-gray-300 w-11 flex rounded-[50px] ml-[10px]">
+                        <input type="checkbox" id="check" class="hidden" [(ngModel)]="checked" (change)="onCheckboxChange()"/>
+                        <label for="check" class="button"></label>
+                    </div> -->
+        </div>
+        <div class="w-full mt-[30px]">
+          <p class="font-medium text-[14px]">
+            {{
+              title === "false"
+                ? "Lý do"
+                : title === "true"
+                ? "Ý kiến góp ý"
+                : ""
+            }}
+          </p>
+          <textarea
+            [(ngModel)]="textValue"
+            class="p-2 border-[1px] rounded-[10px] w-full max-h-[200px] overflow-y-auto break-all"
+          >
+          </textarea>
+        </div>
+
+        <div class="w-full mt-[16px]">
+          <!-- <button 
+                        (click)="putDataReg_Result()"
+                        class="w-full h-[44px] bg-[#009047] rounded-[10px]">
+                        <p class="text-[18px] text-white">
+                            Xác nhận
+                        </p>
+                    </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

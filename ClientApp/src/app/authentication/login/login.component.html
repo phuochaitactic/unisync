@@ -1,0 +1,102 @@
+<div
+  class="flex w-screen h-screen justify-center items-center overflow-hidden fixed"
+>
+  <div class="relative w-full h-full">
+    <img
+      src="/assets/DHN.jpg"
+      alt="Background Image"
+      class="absolute inset-0 w-full h-full div-imgB object-cover"
+    />
+
+    <div class="absolute inset-0 flex justify-center items-center div-mform">
+      <div
+        class="absolute flex w-[480px] p-8 flex-col justify-center gap-4 items-center bor rounded-2xl bg-field shadow-box div-form"
+      >
+        <div class="w-397 div-title flex">
+          <img src="/assets/LOGO.jpg" class="object-cover w-[50px] h-[50px]" />
+          <h1
+            class="font-bold font-chu text-[25px] text-center not-italic leading-48 text-title mb-8 pl-[82px]"
+          >
+            Đăng nhập
+          </h1>
+        </div>
+        <div class="flex w-full col flex-col items-start gap-2">
+          <h4
+            class="font-chu text-xs not-italic font-medium mb-2 text-fields tracking-24 div-text"
+          >
+            Email của bạn:
+          </h4>
+          <input
+            class="flex w-full h-62 p-xx2 items-center gap-x10 self-stretch rounded-xb1 border-test pr-12 div-field"
+            placeholder="Ví dụ: hai@dhmoedu.vn"
+            [(ngModel)]="username"
+            [disabled]="loading"
+            id="email"
+          />
+        </div>
+
+        <div class="flex w-full col flex-col items-start gap-2 relative">
+          <h4
+            class="font-chu text-xs not-italic font-medium text-fields tracking-24 mb-2 div-text"
+          >
+            Mật khẩu:
+          </h4>
+          <div class="relative w-full div-i">
+            <input
+              class="flex w-full h-62 p-xx2 items-center gap-x10 self-stretch rounded-xb1 border-test pr-12 div-field"
+              placeholder="Mật khẩu của bạn"
+              [type]="showpassword ? 'text' : 'password'"
+              id="password"
+              [(ngModel)]="password"
+              [disabled]="loading"
+            />
+            <button
+              type="button"
+              class="absolute top-0 right-3 h-full w-12 bg-transparent border-none"
+              id="togglePassword"
+            >
+              <i
+                (click)="toogleClick()"
+                *ngIf="!showpassword"
+                class="fas fa-eye fa-lg icon"
+              ></i>
+              <i
+                (click)="toogleClick()"
+                class="fas fa-eye-slash fa-lg icon"
+                *ngIf="showpassword"
+              ></i>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="error" class="text-base text-red-400 div-error">
+          {{ error }}
+        </div>
+
+        <button
+          (click)="login()"
+          id="bt-login"
+          class="flex relative h-12 px-xx3 mt-[24px] justify-center items-center gap-x10 self-stretch rounded-xb2 bg-[#29b475] lg:hover:bg-[#1d9a6e] transition-all div-a"
+        >
+          <h3
+            class="font-chu2 text-base not-italic font-semibold text-white div-rem"
+            *ngIf="!loading"
+          >
+            Đăng Nhập
+          </h3>
+          <div class="lds-ring" *ngIf="loading">
+            <div class="1"></div>
+            <div class="1"></div>
+            <div class="1"></div>
+            <div class="1"></div>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="absolute bottom-7 flex div-footer justify-center w-full">
+      <h3 class="text-[14px] font-normal text-fields2 text-center text-footer">
+        © 2023, a product by AQ Technology. All rights reserved. Term &
+        Condition | Privacy & Policy
+      </h3>
+    </div>
+  </div>
+</div>

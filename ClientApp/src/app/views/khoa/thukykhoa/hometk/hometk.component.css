@@ -1,0 +1,101 @@
+
+.buttonSubcontent:active .iconSubContent {
+  filter: color(rgb(0, 93, 220))
+}
+
+
+.button {
+  height: 44px;
+  width: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.border-khoa{
+  border-bottom: 1px solid #EBEAED;
+}
+.button span {
+  font-weight: bold;
+  font-size: 14px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+}
+
+.active-button {
+  background-color: #29B475; /* Màu nền khi nút được kích hoạt */
+  color: white; /* Màu chữ khi nút được kích hoạt */
+  transition: all 0.2s ease-in;
+}
+
+.active-subButton {
+  background-color: #F8F8F8;
+  font-weight: bold;
+}
+.fontss{
+  font-family: "Be Vietnam Pro";
+  
+}
+.bb {
+left: 9px;
+top: -120px;
+border-left: 3px solid #F1F2F4;
+border-bottom: 3px solid #F1F2F4;
+content: "";
+width: 15px;
+height: 30px;
+border-bottom-left-radius: 10px;
+}
+
+.bbc {
+left: 10px;
+border-left: 3px solid #F1F2F4;
+content: "";
+width: 8px;
+position: absolute;
+}
+
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5); /* Màu xám với độ mờ 50% */
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 999;
+}
+
+.modal-content {
+background-color: white; /* Màu nền của biểu mẫu */
+border-radius: 16px; /* Bo góc biểu mẫu */
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+overflow: auto;
+}
+
+.dropdown-container {
+animation: mymove 0.3s ease-in;
+}
+
+@keyframes mymove {
+from {
+  opacity: 0;
+  transform: translateY(-5px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}
+}
+
+.scrollBar::-webkit-scrollbar {
+display: none;
+}
+
+.new{
+background-color: rgb(243, 244, 246);
+border-radius: 10px;
+border: 1px solid rgb(27, 31, 36, 0.15);
+}

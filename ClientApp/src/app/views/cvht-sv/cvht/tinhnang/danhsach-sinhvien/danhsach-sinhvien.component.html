@@ -1,0 +1,120 @@
+<div class="flex-1">
+  <div class="flex items-center py-[10px] px-[6px]">
+    <div class="ml-[12px] flex">
+      <!-- <div class="flex items-center">
+              <p>Năm học: </p>
+              <div class="ml-[8px]">
+                  <select 
+                    [(ngModel)]="selectedYear"
+                    class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 border-[#e6e6e6]" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                    <option *ngFor="let item of dataYear">
+                      {{item}}
+                    </option>
+                      <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                      </svg>
+                  </select>
+              </div>
+          </div>
+  
+          <div class="flex items-center pl-[50px]">
+              <p>Học kì: </p>
+              <div class="ml-[8px]">
+                <select 
+                [(ngModel)]="selectedSemester"
+                  class="border-[#e6e6e6] inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                  <option *ngFor="let item of dataSemester">
+                    {{item}}
+                  </option>
+                    <svg class="-mr-1 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                    </svg>
+                </select>
+              </div>
+          </div> -->
+      <div class="flex items-center">
+        <p>Tình trạng:</p>
+        <div class="ml-[8px]">
+          <select
+            [(ngModel)]="selectedStatus"
+            class="border-[#e6e6e6] inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            id="menu-button"
+            aria-expanded="true"
+            aria-haspopup="true"
+          >
+            <option *ngFor="let item of dataTinhTrang">
+              {{ item.tinhTrang }}
+            </option>
+            <svg
+              class="-mr-1 h-5 w-5 text-gray-400"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </select>
+        </div>
+      </div>
+      <button
+        class="ml-[50px] px-[20px] rounded-[10px] bg-linearGradient border-[1px]"
+        (click)="onButtonClicked()"
+      >
+        <p class="text-white font-bold">Lấy thông tin</p>
+      </button>
+    </div>
+  </div>
+  <div class="h-[40px] mx-[4px] bg-[#f3f3f3] rounded-[6px] items-center flex">
+    <p class="font-Manrope text-[16px] font-bold pl-[16px]">
+      Danh sách sinh viên lớp
+    </p>
+  </div>
+  <div class="max-h-table overflow-auto">
+    <div class="fit-w-table">
+      <table class="max-h-table w-full font-Manrope sticky overflow-auto">
+        <thead class="h-[50px]">
+          <tr>
+            <th class="w-[70px]">STT</th>
+            <th class="w-[250px] text-left">Tên sinh viên</th>
+            <th class="w-[120px] text-left">MSSV</th>
+            <th class="w-[120px]">Ngày sinh</th>
+            <th class="w-[120px]">Tình trạng</th>
+            <th class="w-[200px]"></th>
+          </tr>
+        </thead>
+        <tbody class="">
+          <tr
+            *ngFor="let item of students; let i = index"
+            class="text-center border-b-[1px]"
+          >
+            <td class="py-[16px]">
+              {{ i + 1 }}
+            </td>
+            <td class="text-left font-bold underline text-[#2563EB]">
+              {{ item.hoTenSinhVien }}
+            </td>
+            <td class="text-left">
+              {{ item.maSinhVien }}
+            </td>
+            <td>
+              {{ item.ngaySinh | date : "dd-MM-yyyy" }}
+            </td>
+            <td></td>
+            <td>
+              <button
+                (click)="onClickDetail(item.idSinhVien, item.hoTenSinhVien)"
+                class="border-[1px] rounded-[10px] border-[#e4e4e4] w-[32px] h-[32px]"
+              >
+                <i class="ph ph-caret-right pt-[4px]"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

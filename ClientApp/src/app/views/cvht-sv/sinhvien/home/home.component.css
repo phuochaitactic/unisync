@@ -1,0 +1,176 @@
+th, td {
+    padding-top: 18px;
+    padding-bottom: 18px;
+}
+
+.h-table {
+    height: calc(100% - 54px);
+}
+
+.max-h-table {
+    max-height: 500px;
+}
+  
+.active-subButton {
+    background-color: #23B070;
+    font-weight: bold;
+    color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.regActivity-btn  {
+    background: linear-gradient(180deg, #29B475 0%, #1AAB69 100%);
+    box-shadow: 0px 1px 1px 0px rgba(79, 171, 125, 0.12), 0px 0px 0px 1px rgba(79, 171, 125, 0.24), 0px 2px 5px 0px rgba(79, 171, 125, 0.12);
+}
+
+/* Thiết lập style cho màn hình nhỏ hơn 1000px */
+@media (max-width: 1000px) {
+    .flex-container {
+        flex-direction: column; /* Hiển thị theo chiều dọc */
+    }
+
+    .flex-below {
+        order: 2; /* Đẩy phần flex-[8] xuống dưới */
+    }
+
+    .flex-above {
+        order: 1; /* Hiển thị phần flex-[2] trước tiên */
+    }
+    
+    .footer-mobile {
+        display: block
+    }
+
+    .footer-desktop {
+        display: none
+    }
+
+    .p-ft {
+        padding: 0;
+    }
+
+    .spacing-content-mobile {
+        padding: 10px 0 0 0;
+    }
+
+    .hamburger-menu {
+        display: none;
+    }
+
+    .p-username-mobile {
+        padding: 0 0 0 10px
+    }
+
+    .p-userInfo-mobile {
+        padding: 12px 8px 0;
+    }
+
+    .btn-ft-mobile {
+        height: 36px;
+    }
+}
+
+.dropbtn {
+    padding: 0px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 99;
+    animation: mymove 0.3s ease-in;
+}
+
+@keyframes mymove {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.subdiv {
+    display:none;
+}
+
+.dropdown:hover .subdiv {
+    display:block;
+}
+
+.submenu {
+display:none;
+position:absolute;
+left:60px;
+top:0px;
+}
+
+.submenu_holder:hover .submenu {
+display:block;
+}
+
+.submenu_holder {
+position:relative;
+}
+
+.bg-linearGradient {
+    background: linear-gradient(180deg, #29B475 0%, #1AAB69 100%)
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 9999; /* Ensure it's above other content */
+  }
+  
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 10000; /* Ensure it's above overlay */
+    max-width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+  }

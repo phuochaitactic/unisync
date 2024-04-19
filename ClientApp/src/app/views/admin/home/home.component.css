@@ -1,0 +1,183 @@
+.itemST{
+  background-color: white;
+}
+.itemST > * {
+  border: 1px solid #EBEAED;
+  
+}
+
+.itemST > :first-child{
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.itemST > :last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.active-button {
+  background-color: #f8f8f8;
+  color: black;
+  font-weight: bold;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -4px;
+}
+
+
+.sidebar-hidden {
+  display: none;
+  transform: translateX(-100%);
+}
+.toggle-sidebar-button2 {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 300px;
+  z-index: 999;
+  background-color: #29B475;
+  color: white;
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transform: translateX(0);
+}
+#grayOverlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Màu xám với độ trong suốt là 50% */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10; /* Đảm bảo lớp màu xám nằm phía trên phần còn lại */
+  display: none;
+}
+
+.toggle-sidebar-button {
+  display: none;
+}
+/* Styles for Sidebar when it's hidden */
+@media screen and (max-width: 1300px) {
+  #sidebar {
+    transform: translateX(-100%);
+    position: absolute;
+    transition: 0.2s ease-in;
+    background-color: white;
+    z-index: 999;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .toggle-sidebar-button {
+    display: block;
+    position: absolute;
+    top: 45px;
+    left: 320px;
+    z-index: 999;
+    background-color: #29B475;
+    color: white;
+    padding: 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transform: translateX(0);
+  }
+}
+
+ul{
+  list-style: none;
+  line-height: 2em;
+}
+details > summary {
+  list-style-type: none;
+}
+
+.tree li {
+  position: relative;
+  padding-left: 30px; 
+  padding-bottom: 16px;
+}
+
+.tree li::before{
+  position: absolute;
+  left: 9px;
+  top: -12px;
+  border-left: 2px solid #F1F2F4;
+  border-bottom: 2px solid #F1F2F4;
+  content: "";
+  width: 15px;
+  height: 2em;
+  border-bottom-left-radius: 10px;
+}
+
+.tree li::after{
+  position: absolute;
+  left: 9px;
+  bottom: 0px;
+  border-left: 2px solid #F1F2F4;
+  content: "";
+  width: 8px;
+  height: 100%;
+}
+
+.tree li:last-child::after{
+display: none;
+}
+
+.dropdown-container {
+  animation: mymove 0.3s ease-in;
+}
+
+@keyframes mymove {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scrollBar::-webkit-scrollbar {
+  display: none;
+}
+activeButton2{
+  color: #29B475;
+}
+/* .main {
+  display: flex;
+  align-items: stretch;
+  --sidebar-width: 240px;
+}
+.main > .sidebar {
+  box-sizing: border-box;
+  min-width: var(--sidebar-width);
+  height: 100vh;
+  padding: 12px;
+  margin-left: 0;
+  background: #32373d;
+  color: #fff;
+  transition: margin .3s, background-color .5s;
+}
+.main > .sidebar.toggle {
+  margin-left: calc( var(--sidebar-width) * -1 );
+  background: transparent;
+}
+
+.main > .contents {
+  padding: 12px;
+  background: #ccc;
+  flex: 1;
+}
+
+@media (max-width: 720px) {
+  .main > .sidebar {
+    margin-left: calc( var(--sidebar-width) * -1 );
+    background: transparent;
+  }
+  .main > .sidebar.toggle {
+    margin-left: 0;
+    background: #32373d;
+  }
+} */

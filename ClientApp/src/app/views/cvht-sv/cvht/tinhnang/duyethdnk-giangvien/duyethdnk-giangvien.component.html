@@ -1,0 +1,235 @@
+<div class="w-full h-full flex flex-col font-Manrope p-[10px]">
+  <div class="w-full items-center">
+    <div
+      class="font-Manrope pl-[16px] bg-[#f6f8fa] px-[16px] py-[10px] rounded-t-[10px] border-[#e6e6e6] border-[1px]"
+    >
+      <p class="font-semibold">Chú ý:</p>
+    </div>
+    <div
+      class="px-[16px] py-[8px] border-[#e6e6e6] border-b-[1px] border-x-[1px]"
+    >
+      <div class="flex items-center">
+        <div class="bg-[#D9F9E6] w-[40px] h-[20px] mt-[6px]"></div>
+        <p>: Hoạt động được chấp thuận</p>
+      </div>
+    </div>
+    <div
+      class="px-[16px] py-[8px] border-[#e6e6e6] border-b-[1px] border-x-[1px] rounded-b-[10px]"
+    >
+      <div class="flex items-center">
+        <div class="bg-[#FDE9E9] w-[40px] h-[20px] mt-[6px]"></div>
+        <p>: Hoạt động được không được chấp thuận</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="flex-1 mt-[16px]">
+      <div class="max-h-table overflow-auto">
+        <div class="fit-w-table">
+          <table
+            class="font-Manrope max-h-table w-full outline-1 outline-[#e6e6e6] overflow-hidden rounded-[10px] sticky"
+          >
+            <thead class="font-bold text-[#687588] text-[12px] bg-[#fafafa]">
+              <tr>
+                <th class="w-[70px]">STT</th>
+                <th class="w-[120px]">Mã HĐ</th>
+                <th class="grow items-start justify-start flex">Hoạt động</th>
+                <th class="w-[114px]">Số điểm</th>
+                <th class="w-[114px]">Điều</th>
+                <th class="w-[200px]">Duyệt hoạt động</th>
+              </tr>
+            </thead>
+            <tbody class="font-Manrope text-[12px] text-black">
+              <tr
+                [ngClass]="{
+                  'bg-[#D9F9EE]': data.tinhTrangDuyet === true,
+                  'bg-[#FDF1E9]': data.tinhTrangDuyet === false
+                }"
+                *ngFor="let data of dataReg_Result; let i = index"
+                class="text-center border-[1px]"
+              >
+                <td>{{ stt + i }}</td>
+                <td>{{ data.iddangKy }}</td>
+                <td class="text-left">{{ data.tenhdnk }}</td>
+                <td>{{ data.soDiem }}</td>
+                <td>5</td>
+                <td>
+                  <!-- <button 
+                                        (click)="openPopupComment(data)"
+                                        class="p-[2px]">
+                                        <div class="flex justify-center items-center">
+                                            <i class="ph ph-chat-dots text-[18px]"></i>
+                                        </div>
+                                    </button> -->
+                  <div class="flex justify-center">
+                    <button
+                      (click)="onCheckDataActivity(true, data)"
+                      class="p-[2px] bg-[#D9F9E6] rounded-[5px] stateBox-green tooltip"
+                    >
+                      <div class="flex justify-center items-center">
+                        <i class="ph ph-check text-[20px] text-[#a5ddc2]"></i>
+                      </div>
+                    </button>
+
+                    <div class="w-[10px]"></div>
+                    <button
+                      (click)="onCheckDataActivity(false, data)"
+                      class="p-[2px] bg-[#FDE9E9] rounded-[5px] stateBox-red tooltip"
+                    >
+                      <div class="flex justify-center items-center">
+                        <i class="ph ph-x text-[20px] text-[#E0A9A1]"></i>
+                      </div>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          *ngIf="
+            dataReg_Result && dataReg_Result.length > 0;
+            else noDataMessage
+          "
+        ></div>
+      </div>
+    </div>
+    <div
+      *ngIf="dataReg_Result && dataReg_Result.length > 0; else noDataButtons"
+      class="w-full mt-[16px] border-[1px] rounded-[10px] border-gray-300"
+    >
+      <div
+        class="bg-[#eaeef2] rounded-t-[10px] p-[10px] border-b-[1px] border-gray-300"
+      >
+        <p class="font-medium text-[14px]">Ý kiến góp ý</p>
+      </div>
+      <div class="p-[10px]">
+        <textarea
+          [(ngModel)]="textValue"
+          class="p-2 border-[1px] rounded-[10px] w-full max-h-[200px] overflow-y-auto break-all"
+        >
+        </textarea>
+      </div>
+      <div class="w-full flex justify-end pb-[10px] px-[10px]">
+        <button
+          [disabled]="textValue.length <= 0"
+          class="h-[44px] button-delete px-[20px] rounded-[10px]"
+        >
+          <p class="text-[18px] text-white">Xoá</p>
+        </button>
+        <button
+          (click)="submit()"
+          class="h-[44px] bg-linearGradient px-[20px] rounded-[10px] ml-[8px]"
+        >
+          <p class="text-[18px] text-white">Xác nhận</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDataMessage>
+    <div class="items-center p-[24px]">
+      <div class="justify-center items-center flex">
+        <img src="../../../../assets/noData.png" class="w-[100px] h-[80px]" />
+      </div>
+      <p class="text-[14px] leading-[20px] text-[#57606a] text-center">
+        Không có hoạt động nào được đăng ký!
+      </p>
+    </div>
+  </ng-template>
+
+  <ng-template #noDataButtons> </ng-template>
+</div>
+
+<div
+  *ngIf="isOpenPopup"
+  class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-screen max-h-full font-Manrope"
+>
+  <div class="w-full h-full flex items-center justify-center">
+    <div
+      class="absolute top-0 left-0 w-full h-full bg-gray-800 opacity-50"
+    ></div>
+    <div
+      class="w-[500px] bg-white shadow-2xl p-[24px] rounded-[16px] relative z-10"
+    >
+      <div class="flex justify-between mb-[20px]">
+        <p class="font-Inter font-semibold text-[18px]">
+          Bình luận của Cố vấn học tập
+        </p>
+        <button (click)="closePopupComment()">
+          <div class="flex justify-center items-center">
+            <i class="ph ph-x text-[20px]"></i>
+          </div>
+        </button>
+      </div>
+      <div class="">
+        <div class="w-full mb-[10px]">
+          <p class="font-medium text-[14px]">Hoạt động sinh viên đăng ký</p>
+          <input
+            [(ngModel)]="activitySelected.tenhdnk"
+            disabled
+            class="p-2 border-[1px] rounded-[10px] w-full"
+          />
+        </div>
+        <div class="w-full">
+          <p class="font-medium text-[14px]">
+            Xác nhận cho sinh viên tham gia :
+          </p>
+          <div class="">
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value="false"
+                [(ngModel)]="selectedOption"
+                (change)="toggleOptions(selectedOption)"
+              />
+              Không duyệt
+            </label>
+            <br />
+            <label>
+              <input
+                type="radio"
+                name="option"
+                value="true"
+                [(ngModel)]="selectedOption"
+                (change)="toggleOptions(selectedOption)"
+              />
+              Duyệt
+            </label>
+          </div>
+          <!-- <div class="bg-gray-300 w-11 flex rounded-[50px] ml-[10px]">
+                        <input type="checkbox" id="check" class="hidden" [(ngModel)]="checked" (change)="onCheckboxChange()"/>
+                        <label for="check" class="button"></label>
+                    </div> -->
+        </div>
+        <div class="w-full mt-[30px]">
+          <p class="font-medium text-[14px]">
+            {{
+              title === "false"
+                ? "Lý do"
+                : title === "true"
+                ? "Ý kiến góp ý"
+                : ""
+            }}
+          </p>
+          <textarea
+            [(ngModel)]="textValue"
+            class="p-2 border-[1px] rounded-[10px] w-full max-h-[200px] overflow-y-auto break-all"
+          >
+          </textarea>
+        </div>
+
+        <div class="w-full mt-[16px]">
+          <!-- <button 
+                        (click)="putDataReg_Result()"
+                        class="w-full h-[44px] bg-[#009047] rounded-[10px]">
+                        <p class="text-[18px] text-white">
+                            Xác nhận
+                        </p>
+                    </button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

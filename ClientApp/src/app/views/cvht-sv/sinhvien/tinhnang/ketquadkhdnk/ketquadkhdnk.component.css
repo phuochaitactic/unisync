@@ -1,0 +1,76 @@
+th, td {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+thead {
+  position: sticky;
+  top: 0; /* Giữ phần thead ở trên cùng của phần tử cha */
+  background-color: #fafafa;
+  z-index: 1; /* Đảm bảo phần thead nằm trên cùng */
+}
+
+.h-table {
+  max-height: calc(100% - 38px - 50px);
+}
+
+.max-h-table {
+  max-height: 525px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-overlay::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Màu xám với độ trong suốt 50% */
+  z-index: -1; /* Đặt z-index thấp hơn để không che khu vực của popup */
+}
+.popup {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}  
+
+.stateBox-red {
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 2px rgba(243, 65, 65, 0.40), 0px 2px 5px 0px rgba(243, 65, 65, 0.08);
+}
+
+.stateBox-green {
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12), 0px 0px 0px 2px rgba(83, 180, 131, 0.40), 0px 2px 5px 0px rgba(83, 180, 131, 0.08)
+}
+
+@media (max-width: 1300px) {
+  .fit-w-table {
+    max-width: fit-content;
+  }
+
+  .tb-1 {
+    min-width: max-content;
+  }
+}
+
+@media (max-width: 570px) {
+  .display-col-mobile {
+    flex-direction: column;
+  }
+
+  .padding-col {
+    padding-left: 0px;
+    padding-top: 10px
+  }
+}

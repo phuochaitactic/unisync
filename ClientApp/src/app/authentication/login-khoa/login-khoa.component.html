@@ -1,0 +1,99 @@
+<div class="flex w-full h-screen fixed">
+  <div class="flex-1 flex items-center justify-center">
+    <div class="w-[484px] pb-[70px]">
+      <div>
+        <div class="pb-[50px]">
+          <img src="../../../assets/LOGO.jpg" class="w-[46px] h-[46px]" />
+        </div>
+        <p class="font-medium text-[32px] leading-[40px] fontss pb-[20px]">
+          Đăng nhập
+        </p>
+      </div>
+      <div class="mt-[24px]">
+        <p class="font-medium text-[16px] leading-[24px] mb-[8px]">
+          Địa chỉ Email
+        </p>
+        <input
+          [(ngModel)]="username"
+          class="w-full h-[44px] text-[16px] font-normal p-[16px] outline-none borders"
+          placeholder="Ví dụ: hai.207pm47623@vanlanguni.vn"
+          [disabled]="loading"
+        />
+      </div>
+      <div class="mt-[12px]">
+        <p class="font-medium text-[16px] leading-[24px] mb-[8px]">Mật khẩu</p>
+        <div class="relative w-full div-i items-center">
+          <input
+            class="w-full h-[44px] text-[16px] font-normal p-[16px] outline-none borders"
+            placeholder="Mật khẩu của bạn"
+            [type]="showpassword ? 'text' : 'password'"
+            id="password"
+            [(ngModel)]="password"
+            [disabled]="loading"
+          />
+          <button
+            type="button"
+            class="absolute top-0 right-3 h-full w-12 bg-transparent border-none"
+            id="togglePassword"
+          >
+            <div class="pt-[5px]">
+              <i
+                (click)="toogleClick()"
+                *ngIf="!showpassword"
+                class="ph-bold ph-eye text-[20px]"
+              ></i>
+              <i
+                (click)="toogleClick()"
+                *ngIf="showpassword"
+                class="ph-bold ph-eye-slash text-[20px]"
+              ></i>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- <div class="mt-[24px] flex">
+        <div class="flex items-center">
+          <input type="checkbox" class="checkbox-field" id="myCheckbox" />
+          <label for="myCheckbox" class="checkbox"></label>
+          <p class="font-bold text-[16px] leading-[24px] ml-[12px]">
+            Lưu thông tin đăng nhập
+          </p>
+        </div>
+      </div> -->
+      <button
+        class="h-[50px] w-full flex justify-center items-center rounded-[8px] p-[8px] bg-[#29b475] hover:bg-[#1d9a6e] mt-[24px]"
+        (click)="login()"
+      >
+        <h3
+          class="font-chu2 text-base not-italic font-semibold text-white div-rem"
+          *ngIf="!loading"
+        >
+          Đăng Nhập
+        </h3>
+        <div class="lds-ring pb-[28px]" *ngIf="loading">
+          <div class="1"></div>
+          <div class="1"></div>
+          <div class="1"></div>
+          <div class="1"></div>
+        </div>
+      </button>
+      <div class="absolute bottom-0 w-[484px] mb-[52px]">
+        <div class="flex justify-between">
+          <span class="text-[12px] leading-[20px] text-[#718096]"
+            >Chính sách Bảo mật thông tin</span
+          >
+          <span class="text-[12px] leading-[20px] text-[#718096]"
+            >Bản quyền 2023</span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="flex-1">
+    <img
+      class="h-full w-full display: block object-cover"
+      src="../../../assets/bg-login.jpg"
+    />
+  </div>
+</div>

@@ -1,0 +1,32 @@
+export class DangkyHDNK {
+  idtthdnk!: number;
+  tenNHHK?: Date;
+  tenBHNgChng?: string;
+  maKhoa!: string;
+  tenKhoa!: string;
+  maHdnk!: string;
+  tenHdnk!: string;
+  diemHdnk!: number;
+  coVu?: number;
+  banToChuc?: number;
+  kyNangHDNK?: string;
+  maDieu!: string;
+  noiDungMinhChung?: string;
+  tenGiangVien!: string;
+  tenPhong?: string;
+  tenDiaDiem?: string;
+  phamVi?: string;
+  soLuongThucTe?: number;
+  soLuongDuKien?: number;
+  ghiChu?: string;
+  buoiUuTien!: string;
+  thoiLuongToChuc?: Date;
+  ngayBd!: Date;
+  ngayKt!: Date;
+  isCanPhong!: boolean;
+  lastUpdate?: Date;
+  createdTime?: Date;
+  createdBy!: string;
+  isCanMinhChung!: boolean;
+  tinhTrangDuyet!: boolean;
+}

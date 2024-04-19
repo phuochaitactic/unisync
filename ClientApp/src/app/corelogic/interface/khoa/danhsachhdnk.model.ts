@@ -1,0 +1,32 @@
+export class DanhSachHdnk {
+  idtthdnk!: number;
+  maHdnk!: string;
+  tenHdnk!: string;
+  diemhdnk!: number;
+  coVu!: number;
+  banToChuc!: number;
+  kyNangHdnk!: string;
+  tenGiangVien!: string;
+  maDieu!: string;
+  noiDungMinhChung!: string;
+  tenBhngh!: string;
+  TenBHNgChng!: string;
+  tenPhong!: string;
+  tenDiaDiem!: string;
+  tenNhhk!: string;
+  hoTen!: string;
+  tenNgh!: string;
+  phamVi!: string;
+  soLuongThucTe!: number;
+  soLuongDuKien!: string;
+  ghiChu!: string;
+  buoiUuTien!: string;
+  thoiLuongToChuc!: string;
+  ngayBd!: string;
+  ngayKt!: number;
+  isCanPhong!: boolean;
+  tenKhoa!: string;
+  createdBy!: string;
+  tinhTrangDuyet!: boolean;
+  hinhAnh!: string;
+}
